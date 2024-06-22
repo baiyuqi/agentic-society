@@ -1,0 +1,1 @@
+{"qa":"select  question_answer.*,  persona.*,  question.* from  question_answer	LEFT JOIN persona ON  question_answer.persona_id = persona.id LEFT JOIN question ON  question_answer.question_id = question.id" }

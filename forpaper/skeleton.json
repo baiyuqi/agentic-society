@@ -1,0 +1,18 @@
+
+{
+    "id": 5,
+    "age": 39,
+    "workclass": "State-gov",
+    "education": "Doctorate",
+    "education_num": "16",
+    "marital_status": "Divorced",
+    "occupation": "Prof-specialty",
+    "relationship": "Not-in-family",
+    "race": "White",
+    "sex": "Female",
+    "capital_gain": "0",
+    "capital_loss": "0",
+    "hours_per_week": "40",
+    "native_country": "United-States",
+    "income": ">50K",
+}

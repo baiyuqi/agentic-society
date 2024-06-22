@@ -1,0 +1,10 @@
+{
+    "default": {
+        "question_prompt": "{persona}\nNow you have a question to anwser.\nThe question is enclosed in  \n```\n```, \nfollowed by options alse enclosed in \n```\n```. \nYou should chhose items from the options as your answer. Your answer should be put in pure json format(nothing else) with an 'answer' field containing your choices, a 'solution' field contains your detailed step-by-step solution.\nquestion: \n```{question}\n```  \noptions:\n```{options}\n```",
+        "sheet_prompt": "{persona}\nNow you have a quiz which consists of several multi choice questions.\nThe entire quiz is enclosed in  \n```\n```, \nEach question is numbered, followed by options. \nYou should chhose items from the options as your answer. Your answer shoud be  put in json format with field 'question_id' as numeration of the question and fiels 'answer' as the numeration of your choice in options   \nQuiz paper: \n```{sheet}\n```  "
+    },
+    "ipip_neo_120": { 
+        "question_prompt": "{persona}\nNow lets do a Big Five personality test.\nYou have a question to answer which consists of a statement of some characteristics of somesone.The statement is  followed by options . You should chhose items from the options that you think being mostly suit you. \nquestion: \n```{question}\n```  \noptions:\n```{options}\n```",
+        "sheet_prompt": "{persona}\nNow lets do a Big Five personality test.\nYou have questions to answer which consists of a statement of some characteristics of somesone.The statement is  followed by options . You should chhose items from the options that you think being mostly suit you.\nThe entire test is enclosed in  \n```\n```.\n Your answer shoud be  put in json format with field 'question_id' as number of the question and field 'answer' as the number of your choice in options, for example:\n [\n{{\"question_id\": 1, \"answer\":3}},\n{{\"question_id\": 2, \"answer\":1}}\n]\nPlease answer all questions，better provide  the rationale behind the choices.   \nTest paper: \n```{sheet}\n```  "
+    }
+}
