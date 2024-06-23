@@ -2,10 +2,11 @@ from asociety.generator.persona_skeleton_generator import *
 import json
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.chat_models import ChatZhipuAI
-from langchain_core.output_parsers import StrOutputParser
+import os
+apikey = os.getenv('ZHIPU_APIKEY')
 llm = ChatZhipuAI(
     model="glm-4",
-    api_key="",
+    api_key=apikey,
 )
 with open('prompts/generation.json') as pjson:
             d = json.load(pjson)
