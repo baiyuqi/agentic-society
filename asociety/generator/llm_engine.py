@@ -5,7 +5,7 @@ from langchain_community.chat_models import ChatZhipuAI
 from langchain_core.output_parsers import StrOutputParser
 llm = ChatZhipuAI(
     model="glm-4",
-    api_key="a075eb3edebc5741d238284820988035.6k1unECbt6xLUxfG",
+    api_key="",
 )
 with open('prompts/generation.json') as pjson:
             d = json.load(pjson)
