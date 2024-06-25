@@ -17,7 +17,7 @@ def create_agent(llm, name, persona: str):
                 "system",
                 
                
-                "{persona}Now you inside a chatroom. You can @ somebody or just publish a message without specifying a person."
+                "{persona}Now you inside a chatroom. Prefix your message with #yournickname. You can use @ somebody or just publish a message without specifying a person.For example, if you are chatter1 and want to address chatter2, start with \'#chatter1:\n@chatter2\'.\n"
                 "Your nickname is {name}\n"
                 ,
             ),
@@ -108,6 +108,7 @@ def create_graph(personas):
     
 
     workflow.set_entry_point("chatter9")
+    
     graph = workflow.compile()
     return graph
 
