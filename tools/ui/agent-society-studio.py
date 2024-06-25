@@ -42,8 +42,10 @@ class MainWindow:
         self.browser = DataBrowser(self.right)
 
         self.treeView = self.tree(self.left)
+        from tools.ui.chatroom import Chatroom
+        self.chatroom = Chatroom(self.right)
 
-        panels = {"question": self.browser, "persona":self.browser,"persona group":self.browser,"question group":self.browser,"experimentlist":self.browser,"experiment":self.executor,"analysis":self.analsis}
+        panels = {"question": self.browser, "persona":self.browser,"persona group":self.browser,"question group":self.browser,"experimentlist":self.browser,"experiment":self.executor,"analysis":self.analsis,"chatroom":self.chatroom}
         self.panels = panels
 
     def donothing(self):
