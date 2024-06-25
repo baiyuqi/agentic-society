@@ -9,67 +9,29 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langgraph.graph import END, StateGraph
 
 
-def create_agent(llm, tools, system_message: str):
+def create_agent(llm, name, persona: str):
     """Create an agent."""
     prompt = ChatPromptTemplate.from_messages(
         [
             (
                 "system",
-                "You are a helpful AI assistant, collaborating with other assistants."
-                " Use the provided tools to progress towards answering the question."
-                " If you are unable to fully answer, that's OK, another assistant with different tools "
-                " will help where you left off. Execute what you can to make progress."
-                " If you or any of the other assistants have the final answer or deliverable,"
-                " prefix your response with FINAL ANSWER so the team knows to stop."
-                " You have access to the following tools: {tool_names}.\n{system_message}",
+                
+               
+                "{persona}Now you inside a chatroom. You can @ somebody or just publish a message without specifying a person."
+                "Your nickname is {name}\n"
+                ,
             ),
             MessagesPlaceholder(variable_name="messages"),
         ]
     )
-    prompt = prompt.partial(system_message=system_message)
-    prompt = prompt.partial(tool_names=", ".join([tool.name for tool in tools]))
-    return prompt | llm.bind_tools(tools)
+    prompt = prompt.partial(persona=persona, name=name)
+    return prompt | llm
 
-"""## Define tools
 
-We will also define some tools that our agents will use in the future
-"""
 
-from langchain_core.tools import tool
 from typing import Annotated
-from langchain_experimental.utilities import PythonREPL
-from langchain_community.tools.tavily_search import TavilySearchResults
-
-tavily_tool = TavilySearchResults(max_results=5)
-
-# Warning: This executes code locally, which can be unsafe when not sandboxed
-
-repl = PythonREPL()
 
 
-@tool
-def python_repl(
-    code: Annotated[str, "The python code to execute to generate your chart."]
-):
-    """Use this to execute python code. If you want to see the output of a value,
-    you should print it out with `print(...)`. This is visible to the user."""
-    try:
-        result = repl.run(code)
-    except BaseException as e:
-        return f"Failed to execute. Error: {repr(e)}"
-    result_str = f"Successfully executed:\n```python\n{code}\n```\nStdout: {result}"
-    return (
-        result_str + "\n\nIf you have completed all tasks, respond with FINAL ANSWER."
-    )
-
-"""## Create graph
-
-Now that we've defined our tools and made some helper functions, will create the individual agents below and tell them how to talk to each other using LangGraph.
-
-### Define State
-
-We first define the state of the graph. This will just a list of messages, along with a key to track the most recent sender
-"""
 
 import operator
 from typing import Annotated, Sequence, TypedDict
@@ -84,10 +46,7 @@ class AgentState(TypedDict):
     messages: Annotated[Sequence[BaseMessage], operator.add]
     sender: str
 
-"""### Define Agent Nodes
 
-We now need to define the nodes. First, let's define the nodes for the agents.
-"""
 
 import functools
 from langchain_core.messages import AIMessage
@@ -96,11 +55,7 @@ from langchain_core.messages import AIMessage
 # Helper function to create a node for a given agent
 def agent_node(state, agent, name):
     result = agent.invoke(state)
-    # We convert the agent output into a format that is suitable to append to the global state
-    if isinstance(result, ToolMessage):
-        pass
-    else:
-        result = AIMessage(**result.dict(exclude={"type", "name"}), name=name)
+    result = AIMessage(**result.dict(exclude={"type", "name"}), name=name)
     return {
         "messages": [result],
         # Since we have a strict workflow, we can
@@ -109,122 +64,80 @@ def agent_node(state, agent, name):
     }
 
 from langchain_community.chat_models import ChatZhipuAI
+from asociety.generator.llm_engine import llm
 
-llm = ChatZhipuAI(
-    model="glm-4",
-    api_key="a075eb3edebc5741d238284820988035.6k1unECbt6xLUxfG",
-)
-# Research agent and node
-research_agent = create_agent(
-    llm,
-    [tavily_tool],
-    system_message="You should provide accurate data for the chart_generator to use.",
-)
-research_node = functools.partial(agent_node, agent=research_agent, name="Researcher")
-
-# chart_generator
-chart_agent = create_agent(
-    llm,
-    [python_repl],
-    system_message="Any charts you display will be visible by the user.",
-)
-chart_node = functools.partial(agent_node, agent=chart_agent, name="chart_generator")
-
-"""### Define Tool Node
-
-We now define a node to run the tools
-"""
-
-from langgraph.prebuilt import ToolNode
-
-tools = [tavily_tool, python_repl]
-tool_node = ToolNode(tools)
-
-"""### Define Edge Logic
-
-We can define some of the edge logic that is needed to decide what to do based on results of the agents
-"""
 
 # Either agent can decide to end
 from typing import Literal
 
 
-def router(state) -> Literal["call_tool", "__end__", "continue"]:
+def router(state, personas) :
     # This is the router
-    messages = state["messages"]
-    last_message = messages[-1]
-    if last_message.tool_calls:
-        # The previous agent is invoking a tool
-        return "call_tool"
-    if "FINAL ANSWER" in last_message.content:
-        # Any agent decided the work is done
-        return "__end__"
-    return "continue"
+    import random
+    return random.choice(list(personas.keys()))
+    
 
-"""### Define the Graph
+def create_graph(personas):
+    chatters = {}
+    routerd = {}
 
-We can now put it all together and define the graph!
-"""
+    global router
+    for i, (k,v) in enumerate(personas.items()):
+        name = "chatter" + k
+        agent = create_agent(
+            llm,
+            name,
+            persona=v,
+        )
+       
+        chatter = functools.partial(agent_node, agent=agent, name=name)
+        routerd[name] = name
+      
+        chatters[name] = chatter
 
-workflow = StateGraph(AgentState)
 
-workflow.add_node("Researcher", research_node)
-workflow.add_node("chart_generator", chart_node)
-workflow.add_node("call_tool", tool_node)
+    workflow = StateGraph(AgentState)
+    mrouter = functools.partial(router, personas=routerd)
+    for k, c in chatters.items():
+        workflow.add_node(k, c)
+        workflow.add_conditional_edges(
+            k,
+            mrouter,
+            routerd,
+        )
+    
 
-workflow.add_conditional_edges(
-    "Researcher",
-    router,
-    {"continue": "chart_generator", "call_tool": "call_tool", "__end__": END},
-)
-workflow.add_conditional_edges(
-    "chart_generator",
-    router,
-    {"continue": "Researcher", "call_tool": "call_tool", "__end__": END},
-)
+    workflow.set_entry_point("chatter9")
+    graph = workflow.compile()
+    return graph
 
-workflow.add_conditional_edges(
-    "call_tool",
-    # Each agent node updates the 'sender' field
-    # the tool calling node does not, meaning
-    # this edge will route back to the original agent
-    # who invoked the tool
-    lambda x: x["sender"],
-    {
-        "Researcher": "Researcher",
-        "chart_generator": "chart_generator",
-    },
-)
-workflow.set_entry_point("Researcher")
-graph = workflow.compile()
 
-from IPython.display import Image, display
+if __name__ == "__main__": 
+    personas = {'9':'''You are a 43-year-old professional, employed in the federal government sector. With a solid educational background that includes professional school, you have accumulated 15 years of education. As a married man, you are the proud husband in a civilian marriage, and you hold the title of a professional specialist in your occupation. Your Asian-Pacific Islander heritage contributes to your unique perspective in your work and personal life. Despite having no capital gains to speak of, you have experienced a capital loss of 2415, which has not deterred you from working diligently, clocking in 55 hours a week. Your income comfortably surpasses the 50K mark, reflecting your hard work and dedication. Your native country remains a mystery, perhaps a topic you choose to explore with others rather than revealing directly. Overall, you present as a committed, well-educated professional with a strong sense of responsibility and a varied life experience.''',
+                '10':'''You are a 25-year-old married man, originally from Guatemala, now living and working in the private sector. With a 10th-grade education under your belt, which translates to about 6 years of formal schooling, you've embarked on a career as a machine operator and inspector. Your workweek is standard, clocking in at 40 hours, and you've yet to see significant capital gains or losses. Your income level is currently less than 50K per year. As a husband and a provider, you likely carry a sense of responsibility for your family, striving to make the best of your circumstances and work your way up in life. Your journey from Guatemala to your current life has shaped you into a resilient and hardworking individual.''',
+                '11':'''You are a 31-year-old, highly educated black woman, working in a private sector with a specialized professional occupation. You have never been married and currently have no family ties, which may explain the long hours you put into your work—up to 60 hours a week. Your dedication has clearly paid off, as you’ve accumulated a substantial capital gain of $14,084, with no recorded losses. With a Bachelor's degree and 13 years of education, you are likely respected in your field and have a bright future ahead of you. As a native of the United States, you embody the American spirit of hard work and success, reflected in your income of over $50K per year. Your life is a testament to the power of perseverance and education, and you serve as an inspiration to others aspiring to achieve similar levels of professional and personal growth.'''}
+    graph = create_graph(personas)
+    from IPython.display import Image, display
 
-try:
-    display(Image(graph.get_graph(xray=True).draw_mermaid_png()))
-except:
-    # This requires some extra dependencies and is optional
-    pass
+    try:
+        display(Image(graph.get_graph(xray=True).draw_mermaid_png()))
+    except:
+        # This requires some extra dependencies and is optional
+        pass
 
-"""## Invoke
-
-With the graph created, you can invoke it! Let's have it chart some stats for us.
-"""
-
-events = graph.stream(
-    {
-        "messages": [
-            HumanMessage(
-                content="Fetch the UK's GDP over the past 5 years,"
-                " then draw a line graph of it."
-                " Once you code it up, finish."
-            )
-        ],
-    },
-    # Maximum number of steps to take in the graph
-    {"recursion_limit": 150},
-)
-for s in events:
-    print(s)
-    print("----")
+    events = graph.stream(
+        {
+            "messages": [
+                HumanMessage(
+                    content="Let's talk about something interesting. Better first introduce yourself."
+                    
+                )
+            ],
+        },
+        # Maximum number of steps to take in the graph
+        {"recursion_limit": 150},
+    )
+    for s in events:
+        print(s)
+        print("----")
 
