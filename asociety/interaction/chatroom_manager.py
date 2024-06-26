@@ -7,7 +7,19 @@ from langchain_core.messages import (
 )
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langgraph.graph import END, StateGraph
-
+def select_personas(n):
+    from asociety.repository.persina_rep import Persona
+    from asociety.repository.database import engine
+    from sqlalchemy.orm import Session
+    with Session(engine) as session:
+        ps = session.query(Persona).all()
+        data = {p.id: p.persona_desc for p in ps }
+        eve = [p.id for p in ps]
+        import random
+        selected = random.choices(eve, k=n)
+        
+        rst =    {id:data[id] for id in selected }
+        return rst
 
 def create_agent(llm, name, persona: str):
     """Create an agent."""
@@ -53,9 +65,11 @@ from langchain_core.messages import AIMessage
 
 
 # Helper function to create a node for a given agent
-def agent_node(state, agent, name):
+def agent_node(state, agent, name,listener):
     result = agent.invoke(state)
     result = AIMessage(**result.dict(exclude={"type", "name"}), name=name)
+    if(listener != None):
+        listener(result.content)
     return {
         "messages": [result],
         # Since we have a strict workflow, we can
@@ -74,23 +88,29 @@ from typing import Literal
 def router(state, personas) :
     # This is the router
     import random
-    return random.choice(list(personas.keys()))
+    data = []
+    mmm = list(personas.keys())
+    for m in mmm:
+        if(m != state['sender']):
+            data.append(m)
+    return random.choice(data)
     
 
-def create_graph(personas):
+def create_graph(personas, message_listener):
     chatters = {}
     routerd = {}
 
     global router
     for i, (k,v) in enumerate(personas.items()):
-        name = "chatter" + k
+        name = "chatter" + str(k)
         agent = create_agent(
             llm,
             name,
-            persona=v,
+            persona=v
+
         )
        
-        chatter = functools.partial(agent_node, agent=agent, name=name)
+        chatter = functools.partial(agent_node, agent=agent, name=name,  listener = message_listener)
         routerd[name] = name
       
         chatters[name] = chatter
@@ -106,18 +126,16 @@ def create_graph(personas):
             routerd,
         )
     
-
-    workflow.set_entry_point("chatter9")
+    starter = 'chatter' + str(list(personas.keys())[0])
+    workflow.set_entry_point(starter)
     
     graph = workflow.compile()
     return graph
 
 
 if __name__ == "__main__": 
-    personas = {'9':'''You are a 43-year-old professional, employed in the federal government sector. With a solid educational background that includes professional school, you have accumulated 15 years of education. As a married man, you are the proud husband in a civilian marriage, and you hold the title of a professional specialist in your occupation. Your Asian-Pacific Islander heritage contributes to your unique perspective in your work and personal life. Despite having no capital gains to speak of, you have experienced a capital loss of 2415, which has not deterred you from working diligently, clocking in 55 hours a week. Your income comfortably surpasses the 50K mark, reflecting your hard work and dedication. Your native country remains a mystery, perhaps a topic you choose to explore with others rather than revealing directly. Overall, you present as a committed, well-educated professional with a strong sense of responsibility and a varied life experience.''',
-                '10':'''You are a 25-year-old married man, originally from Guatemala, now living and working in the private sector. With a 10th-grade education under your belt, which translates to about 6 years of formal schooling, you've embarked on a career as a machine operator and inspector. Your workweek is standard, clocking in at 40 hours, and you've yet to see significant capital gains or losses. Your income level is currently less than 50K per year. As a husband and a provider, you likely carry a sense of responsibility for your family, striving to make the best of your circumstances and work your way up in life. Your journey from Guatemala to your current life has shaped you into a resilient and hardworking individual.''',
-                '11':'''You are a 31-year-old, highly educated black woman, working in a private sector with a specialized professional occupation. You have never been married and currently have no family ties, which may explain the long hours you put into your work—up to 60 hours a week. Your dedication has clearly paid off, as you’ve accumulated a substantial capital gain of $14,084, with no recorded losses. With a Bachelor's degree and 13 years of education, you are likely respected in your field and have a bright future ahead of you. As a native of the United States, you embody the American spirit of hard work and success, reflected in your income of over $50K per year. Your life is a testament to the power of perseverance and education, and you serve as an inspiration to others aspiring to achieve similar levels of professional and personal growth.'''}
-    graph = create_graph(personas)
+    personas = select_personas(3)
+    graph = create_graph(personas, message_listener=None)
     from IPython.display import Image, display
 
     try:
@@ -136,7 +154,7 @@ if __name__ == "__main__":
             ],
         },
         # Maximum number of steps to take in the graph
-        {"recursion_limit": 150},
+        {"recursion_limit": 5},
     )
     for s in events:
         print(s)

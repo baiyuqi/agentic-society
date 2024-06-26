@@ -33,22 +33,47 @@ class Chatroom:
         """
         self.text_widget.insert(END, sample_text)
 
-    def setData(self, item):
-        if(item == 'persona'):
-            self.table.model.df = pd.read_sql_query("select * from persona limit 100", engine)
-           
-        elif(item == 'question'):
-            self.table.model.df = pd.read_sql_query("select * from question limit 100", engine)
-           
-        elif(item == 'persona group'):
-            self.table.model.df = pd.read_sql_query("select * from persona_group limit 100", engine)
-           
-        elif(item == 'question group'):
-            self.table.model.df = pd.read_sql_query("select * from question_group limit 100", engine)
-            
-        elif(item == 'experimentlist'):
-            self.table.model.df = pd.read_sql_query("select * from experiment limit 100", engine)
-           
-        self.table.redraw()
+
+        
+        self.submit_button = Button(bottom_frame, text="start chat", command=self.start_chat)
+        self.submit_button.grid(row=2, column=0, columnspan=1, pady=10)
+
+  
     def message(self, msg):
-            self.text_widget.insert(END, msg)
+            self.text_widget.insert(END, '\n\n' + msg)
+    def start_chat(self):
+        from asociety.interaction.chatroom_manager import select_personas, create_graph
+        personas = select_personas(3)
+        graph = create_graph(personas, self.message)
+        from IPython.display import Image, display
+
+        try:
+            display(Image(graph.get_graph(xray=True).draw_mermaid_png()))
+        except:
+            # This requires some extra dependencies and is optional
+            pass
+        from langchain_core.messages import (
+            HumanMessage,
+        )
+        events = graph.stream(
+            {
+                "messages": [
+                    HumanMessage(
+                        content="Let's talk about something interesting. Better first introduce yourself."
+                        
+                    )
+                ],
+            },
+            # Maximum number of steps to take in the graph
+            {"recursion_limit": 150},
+        )
+        def run():
+            for s in events:
+                print(s)
+                print("----")
+        self.text_widget.delete(1.0, END)
+        import threading
+        # 启动一个新线程来执行耗时任务
+        task_thread = threading.Thread(target=run)
+        task_thread.start()
+
