@@ -37,6 +37,7 @@ def create_agent(llm, name, persona: str):
                 ,
             ),
             MessagesPlaceholder(variable_name="messages"),
+            
         ]
     )
     prompt = prompt.partial(persona=persona, name=name)
@@ -75,10 +76,13 @@ def agent_node(state, agent, name,listener):
     length = len(mcopy["messages"])
     if length > 4:
         del mcopy["messages"][1:length - 3]
-    result = agent.invoke(mcopy)
+    result = agent.invoke(state)
     result = AIMessage(**result.dict(exclude={"type", "name"}), name=name)
     if(listener != None):
         listener(result.content)
+
+    if result.content == '':
+        return {}
     return {
         "messages": [result],
         # Since we have a strict workflow, we can
