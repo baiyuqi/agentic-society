@@ -29,8 +29,11 @@ def create_agent(llm, name, persona: str):
                 "system",
                 
                
-                "{persona}Now you inside a chatroom. Prefix your message with #yournickname. You can use @ somebody or just publish a message without specifying a person.For example, if you are chatter1 and want to address chatter2, start with \'#chatter1:\n@chatter2\'.\n"
+                "{persona}Now you are inside a chatroom. Prefix your message with #yournickname. You can use @ to address somebody or just publish a message without specifying a person.For example, if you are chatter1 and want to address chatter2, start with \'#chatter1:\n@chatter2\'.\n"
                 "Your nickname is {name}\n"
+                "If you don't want to speak, just respond with \'silence\'\n"
+                "If you want to go away, just respond with \'exit\'\n"
+                "If you want to add fiend, just respond with \'add-fiend: #friend nickname\'\n"
                 ,
             ),
             MessagesPlaceholder(variable_name="messages"),
@@ -77,7 +80,6 @@ def agent_node(state, agent, name,listener):
         "sender": name,
     }
 
-from langchain_community.chat_models import ChatZhipuAI
 from asociety.generator.llm_engine import llm
 
 
@@ -99,8 +101,6 @@ def router(state, personas) :
 def create_graph(personas, message_listener):
     chatters = {}
     routerd = {}
-
-    global router
     for i, (k,v) in enumerate(personas.items()):
         name = "chatter" + str(k)
         agent = create_agent(
