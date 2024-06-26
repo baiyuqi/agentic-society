@@ -33,7 +33,7 @@ def create_agent(llm, name, persona: str):
                 "Your nickname is {name}\n"
                 "If you don't want to speak, just respond with \'silence\'\n"
                 "If you want to go away, just respond with \'exit\'\n"
-                "If you want to add fiend, just respond with \'add-fiend: #friend nickname\'\n"
+                "If you want to add fiend, just respond with \'add-friend: #friend nickname\'\n"
                 ,
             ),
             MessagesPlaceholder(variable_name="messages"),
@@ -66,9 +66,12 @@ class AgentState(TypedDict):
 import functools
 from langchain_core.messages import AIMessage
 
-
+data = [1,2,3,4,5,6]
+del data[0:3]
 # Helper function to create a node for a given agent
 def agent_node(state, agent, name,listener):
+    import copy
+   
     result = agent.invoke(state)
     result = AIMessage(**result.dict(exclude={"type", "name"}), name=name)
     if(listener != None):
@@ -148,7 +151,7 @@ if __name__ == "__main__":
         {
             "messages": [
                 HumanMessage(
-                    content="Let's talk about something interesting. Better first introduce yourself."
+                    content="Let's talk about something interesting"
                     
                 )
             ],
