@@ -71,8 +71,11 @@ del data[0:3]
 # Helper function to create a node for a given agent
 def agent_node(state, agent, name,listener):
     import copy
-   
-    result = agent.invoke(state)
+    mcopy: AgentState = copy.deepcopy(state)
+    length = len(mcopy["messages"])
+    if length > 4:
+        del mcopy["messages"][1:length - 3]
+    result = agent.invoke(mcopy)
     result = AIMessage(**result.dict(exclude={"type", "name"}), name=name)
     if(listener != None):
         listener(result.content)
