@@ -20,8 +20,15 @@ class Chatroom:
         inner_panedwindow.add(top_frame, weight=1)
         inner_panedwindow.add(bottom_frame, weight=1)
 
+        top_panedwindow = ttk.PanedWindow(top_frame, orient=HORIZONTAL)
+        top_left_frame = ttk.Frame(top_panedwindow, width=400, height=200)
+        top_right_frame = self.top_right_frame = ttk.Frame(top_panedwindow, width=400, height=200)
+        top_panedwindow.add(top_left_frame, weight=1)
+        top_panedwindow.add(top_right_frame, weight=1)
+        top_panedwindow.pack(fill=BOTH, expand=True)  # Pack the top_panedwindow
+
         # Create a scrolled text widget
-        self.text_widget = scrolledtext.ScrolledText(top_frame, wrap=WORD, bg='#1E1E1E', fg='#DADADA', 
+        self.text_widget = scrolledtext.ScrolledText(top_left_frame, wrap=WORD, bg='#1E1E1E', fg='#DADADA', 
                                                      insertbackground='#DADADA', font=('Helvetica', 14),
                                                      selectbackground='#5A5A5A', selectforeground='#FFFFFF', 
                                                      relief=FLAT, padx=10, pady=10)
@@ -34,17 +41,57 @@ class Chatroom:
         self.text_widget.insert(END, sample_text)
 
 
-        
+      
+        self.submit_button = Button(bottom_frame, text="select chatters" , command=self.select_chatters)
+        self.submit_button.grid(row=1, column=0, columnspan=1, pady=10)
+
         self.submit_button = Button(bottom_frame, text="start chat", command=self.start_chat)
-        self.submit_button.grid(row=2, column=0, columnspan=1, pady=10)
+        self.submit_button.grid(row=1, column=2, columnspan=1, pady=10)
+        self.submit_button = Button(bottom_frame, text="stop chat", command=self.stop_chat)
+        self.submit_button.grid(row=1, column=4, columnspan=1, pady=10)
+        self.tree = self.persona_table(top_right_frame)
+    def fill_personas(self,data):
+        self.tree.delete(*self.tree.get_children())
+        for person in data:
+            self.tree.insert("", "end", values=person)
+        self.top_right_frame.update()
+    def persona_table(self, parent):
+
+        tree = ttk.Treeview(parent, columns=("id", "Name", "Age", "Occupation"), show='headings')
+        tree.heading("id", text="id")
+        tree.heading("Name", text="Name")
+        tree.heading("Age", text="Age")
+        tree.heading("Occupation", text="Occupation")
+
+        # Set column widths
+        tree.column("id", width=150)
+        tree.column("Name", width=150)
+        tree.column("Age", width=100)
+        tree.column("Occupation", width=150)
+
+        # Add a vertical scrollbar
+        scrollbar = ttk.Scrollbar(parent, orient="vertical", command=tree.yview)
+        tree.configure(yscrollcommand=scrollbar.set)
+
+        # Pack the Treeview and scrollbar
+        tree.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        return tree
 
   
     def message(self, msg):
             self.text_widget.insert(END, '\n\n' + msg)
+    def select_chatters(self):
+
+        from asociety.interaction.chatroom_manager import select_personas
+        self.personas = select_personas(7)
+        self.fill_personas(self.personas)
+    def stop_chat(self):
+        self.run = False
     def start_chat(self):
-        from asociety.interaction.chatroom_manager import select_personas, create_graph
-        personas = select_personas(3)
-        graph = create_graph(personas, self.message)
+        self.run = True;
+        from asociety.interaction.chatroom_manager import create_graph
+        graph = create_graph(self.personas, self.message)
         from IPython.display import Image, display
 
         try:
@@ -69,11 +116,13 @@ class Chatroom:
         )
         def run():
             for s in events:
+                if not self.run:
+                    return;
                 print(s)
                 print("----")
         self.text_widget.delete(1.0, END)
         import threading
         # 启动一个新线程来执行耗时任务
-        task_thread = threading.Thread(target=run)
-        task_thread.start()
+        self.task_thread = threading.Thread(target=run)
+        self.task_thread.start()
 

@@ -76,8 +76,9 @@ def agent_node(state, agent, name,listener):
     length = len(mcopy["messages"])
     if length > 4:
         del mcopy["messages"][1:length - 3]
-    result = agent.invoke(state)
-    result = AIMessage(**result.dict(exclude={"type", "name"}), name=name)
+    #result = agent.invoke(state)
+    #result = AIMessage(**result.dict(exclude={"type", "name"}), name=name)
+    result = AIMessage(content="hello world!", name=name)
     if(listener != None):
         listener(result.content)
 
@@ -96,8 +97,20 @@ from asociety.generator.llm_engine import llm
 # Either agent can decide to end
 from typing import Literal
 
+from collections import deque
+atqueue = deque()
+
+def extract_at(msg):
+    import re
+    swords = re.findall(r'@\w+\d+', msg)
+    atqueue.extend(swords)
 
 def router(state, personas) :
+    msg = state['messages'][-1].content
+    extract_at(msg)
+    if  atqueue:
+        at = atqueue.pop()
+        return at[1:]
     # This is the router
     import random
     data = []
@@ -138,7 +151,6 @@ def create_graph(personas, message_listener):
     
     starter = 'chatter' + str(list(personas.keys())[0])
     workflow.set_entry_point(starter)
-    
     graph = workflow.compile()
     return graph
 
@@ -147,7 +159,6 @@ if __name__ == "__main__":
     personas = select_personas(3)
     graph = create_graph(personas, message_listener=None)
     from IPython.display import Image, display
-
     try:
         display(Image(graph.get_graph(xray=True).draw_mermaid_png()))
     except:
