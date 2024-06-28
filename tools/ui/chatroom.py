@@ -56,9 +56,9 @@ class Chatroom:
         self.submit_button = Button(bottom_frame, text="query friends", command=self.query_friends)
         self.submit_button.grid(row=1, column=8, columnspan=1, pady=10)
         self.tree = self.persona_table(top_right_frame)
-    def fill_personas(self,data):
+    def fill_personas(self,data,fp):
         self.tree.delete(*self.tree.get_children())
-        for person in data:
+        for person in fp:
             self.tree.insert("", "end", values=person)
         self.top_right_frame.update()
     def persona_table(self, parent):
@@ -98,8 +98,8 @@ class Chatroom:
     def select_chatters(self):
 
         from asociety.interaction.chatroom_manager import select_personas
-        self.personas = select_personas(7)
-        self.fill_personas(self.personas)
+        self.personas, fp = select_personas(7)
+        self.fill_personas(self.personas, fp)
     def stop_chat(self):
         self.run = False
     def start_chat(self):

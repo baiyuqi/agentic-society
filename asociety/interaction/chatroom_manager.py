@@ -30,13 +30,14 @@ def select_personas(n):
     from sqlalchemy.orm import Session
     with Session(engine) as session:
         ps = session.query(Persona).all()
+        indexed = {p.id: p  for p in ps }
         data = {p.id: p.persona_desc for p in ps }
         eve = [p.id for p in ps]
         import random
         selected = random.choices(eve, k=n)
         
         rst =    {id:data[id] for id in selected }
-        return rst
+        return rst, [indexed[p] for p in list(rst.keys())]
 
 def create_agent(llm, name, persona: str):
     """Create an agent."""
