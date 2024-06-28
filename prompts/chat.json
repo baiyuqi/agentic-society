@@ -1,0 +1,4 @@
+{
+    "summary":"Following is the history of a chatroom, please generate a summary of it ",
+    "friend":"{persona}Following is a summary of a chatroom which you are a participant.Your nickname is {nickname}. You can select friends from people in it to add to your friend list. Give the friends in json format. Of course, you can also select none."
+}

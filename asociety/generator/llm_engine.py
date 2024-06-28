@@ -19,3 +19,23 @@ with open('prompts/generation.json') as pjson:
             pe = d["personality_eliciting"]
             personality_eliciting = ChatPromptTemplate.from_template(pe)
             pjson.close()
+with open('prompts/chat.json') as pjson:
+            d = json.load(pjson)
+            sm = d["summary"]
+            
+            fr = d["friend"]
+            friend = ChatPromptTemplate.from_template(fv)
+            pjson.close()
+from langchain_core.prompts import  MessagesPlaceholder
+summary = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                
+               
+                fr,
+            ),
+            MessagesPlaceholder(variable_name="messages"),
+            
+        ]
+    )

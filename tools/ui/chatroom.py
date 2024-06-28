@@ -49,6 +49,12 @@ class Chatroom:
         self.submit_button.grid(row=1, column=2, columnspan=1, pady=10)
         self.submit_button = Button(bottom_frame, text="stop chat", command=self.stop_chat)
         self.submit_button.grid(row=1, column=4, columnspan=1, pady=10)
+
+        self.submit_button = Button(bottom_frame, text="chat summary", command=self.chat_summary)
+        self.submit_button.grid(row=1, column=6, columnspan=1, pady=10)
+
+        self.submit_button = Button(bottom_frame, text="query friends", command=self.query_friends)
+        self.submit_button.grid(row=1, column=8, columnspan=1, pady=10)
         self.tree = self.persona_table(top_right_frame)
     def fill_personas(self,data):
         self.tree.delete(*self.tree.get_children())
@@ -81,6 +87,14 @@ class Chatroom:
   
     def message(self, msg):
             self.text_widget.insert(END, '\n\n' + msg)
+    def chat_summary(self): 
+        from asociety.interaction.chatroom_manager import get_summary
+        sum = get_summary(None)
+    def query_friends(self): 
+        from asociety.interaction.chatroom_manager import get_friends
+        for p in self.personas:
+            sum = get_friends(persona=p['persona'], nickname="chatter" + str(p['id']))
+
     def select_chatters(self):
 
         from asociety.interaction.chatroom_manager import select_personas

@@ -7,6 +7,23 @@ from langchain_core.messages import (
 )
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langgraph.graph import END, StateGraph
+latest_state = None
+def get_summary(graph: StateGraph):
+    if not latest_state:
+        return None
+    from langchain_core.output_parsers import StrOutputParser
+    output_parser = StrOutputParser()
+    from asociety.generator.llm_engine import llm, summary, friend
+    chain = summary | llm |output_parser
+    resp = chain.invoke(latest_state)
+    return resp
+def get_friends(persona, sum,nickname):
+    from langchain_core.output_parsers import StrOutputParser
+    output_parser = StrOutputParser()
+    from asociety.generator.llm_engine import llm, summary, friend
+    chain = friend | llm |output_parser
+    resp = chain.invoke({'persona':persona.persona, 'summary':sum,'nickname':nickname})
+    return resp
 def select_personas(n):
     from asociety.repository.persina_rep import Persona
     from asociety.repository.database import engine
@@ -106,6 +123,8 @@ def extract_at(msg):
     atqueue.extend(swords)
 
 def router(state, personas) :
+    global latest_state
+    latest_state = state
     msg = state['messages'][-1].content
     extract_at(msg)
     if  atqueue:
