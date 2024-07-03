@@ -1,6 +1,5 @@
 from asociety.repository.database import engine
-from asociety.repository.experiment_rep import QuizAnswer
-from asociety.repository.persina_rep import Persona
+
 def data(ps):
         result = [[],[],[],[],[],[]]
         
@@ -51,9 +50,3 @@ def extract_personas_of_experiment():
         plt.show()
    
 
-
- 
-  
-     
-if __name__ == "__main__": 
-   extract_personas_of_experiment()
