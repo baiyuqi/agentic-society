@@ -6,7 +6,7 @@ from asociety.repository.database import engine
 import pandas as pd
 
 from asociety.generator.persona_generator import *
-from asociety.repository.persina_rep import PersonaRepository
+
 class PersonaSamplingDialog:
     def __init__(self, root):
 
@@ -62,6 +62,6 @@ class PersonaSamplingDialog:
         self.table.show()
         self.table.redraw()
 
-        rep: PersonaRepository = PersonaRepository()
-        rep.savePersonas(samples)
+        from asociety.repository.persina_rep import savePersonas
+        savePersonas(samples)
         self.progressbar.stop()

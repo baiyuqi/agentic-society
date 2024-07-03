@@ -77,7 +77,7 @@ class RandomSelect:
             personas = self.personaSelector.selectRandomly(number)
         if self.mode == 1:
             combo_value = self.column_var.get()
-            personas = self.personaSelector.selectOnColumn(number)
+            personas = self.personaSelector.selectOnColumn(combo_value,number)
 
             
         if self.mode == 2:
@@ -105,19 +105,19 @@ class SelectPersona:
         # 将两个 Frame 添加到 PanedWindow
         paned_window.add(top_frame)
         paned_window.add(bottom_frame)
-        self.byrandom = Button(top_frame, text='all', command=self.all)
+        self.all = Button(top_frame, text='all', command=self.all)
 
-        self.byrandom.pack(padx=10,pady=10)
+        self.all.grid(row=0, column=0, padx=10, pady=5, sticky='w')
         self.byrandom = Button(top_frame, text='complete random', command=self.randomly)
 
-        self.byrandom.pack(padx=10,pady=10)
+        self.byrandom.grid(row=0, column=1, padx=10, pady=5, sticky='w')
 
         self.bycolumn = Button(top_frame, text='by column', command=self.by_column)
 
-        self.bycolumn.pack(padx=10,pady=10)
+        self.bycolumn.grid(row=0, column=2, padx=10, pady=5, sticky='w')
         self.oncolmn = Button(top_frame, text='on column', command=self.on_column)
 
-        self.oncolmn.pack(padx=10,pady=10)
+        self.oncolmn.grid(row=0, column=3, padx=10, pady=5, sticky='w')
 
            
 
@@ -168,19 +168,19 @@ class CreatePersonaGroup:
         # Entry
         self.name_var = StringVar()
         self.name_entry = ttk.Entry(bottom_frame, textvariable=self.name_var)
-        self.name_entry.grid(row=1, column=0, padx=10, pady=5, sticky='w')
+        self.name_entry.grid(row=0, column=1, padx=10, pady=5, sticky='w')
 
         # Label for Entry
         self.desc_label = Label(bottom_frame, text="Enter Description:")
-        self.desc_label.grid(row=0, column=1, padx=10, pady=5, sticky='w')
+        self.desc_label.grid(row=0, column=2, padx=10, pady=5, sticky='w')
 
         # Entry
         self.desc_var = StringVar()
         self.desc_entry = ttk.Entry(bottom_frame, textvariable=self.desc_var)
-        self.desc_entry.grid(row=1, column=1, padx=10, pady=5, sticky='w')
+        self.desc_entry.grid(row=0, column=3, padx=10, pady=5, sticky='w')
 
         self.submit_button = Button(bottom_frame, text="create", command=self.create)
-        self.submit_button.grid(row=2, column=0, columnspan=2, pady=10)
+        self.submit_button.grid(row=1, column=0, columnspan=2, pady=10)
 
 
     def create(self):

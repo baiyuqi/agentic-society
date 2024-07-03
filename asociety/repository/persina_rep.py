@@ -36,66 +36,66 @@ class Persona(Base):
 
 
 
+persona_remained_personality = '''
+select persona.* from persona left join personality on persona.id = personality.persona_id where personality.persona_id is null
+'''
 
 
 
 
-class PersonaRepository:
-    def __init__(self) -> None:
-        
-        from asociety.repository.database import engine
-        self.engine =engine
-        Base.metadata.create_all(self.engine)
-    def savePersonas(self, ps):
-
-        
-        from sqlalchemy.orm import Session
-
-        with Session(self.engine) as session:
-            for p in ps:
-                per = self.toPersona(p)
-                session.add(per)
-            
-            
-            session.commit()
-       
+from asociety.repository.database import engine
 
 
-    def savePersona(self, data):
-            
-        from sqlalchemy.orm import Session
+def savePersonas( ps):
 
-        with Session(self.engine) as session:
-            per = self.toPersona(data)
+    
+    from sqlalchemy.orm import Session
+
+    with Session(engine) as session:
+        for p in ps:
+            per = toPersona(p)
             session.add(per)
-            
-            
-            session.commit()
-
-    def toPersona(self, data):
-        per = Persona(
-            age = data["age"],
-            workclass = data['workclass'],
-            education=data["education"],
-            education_num=data["education.num"],
-            marital_status=data["marital.status"],
-            occupation=data["occupation"],
-            relationship=data["relationship"],
-            race=data["race"],
-            sex=data["sex"],
-            capital_gain=data["capital.gain"],
-            capital_loss=data["capital.loss"],
-            hours_per_week=data["hours.per.week"],
-            native_country=data["native.country"],
-            income=data["income"],
-            persona_desc=data["persona_desc"]
-            )
         
-        return per
+        
+        session.commit()
+    
+
+
+def savePersona(self, data):
+        
+    from sqlalchemy.orm import Session
+
+    with Session(engine) as session:
+        per = toPersona(data)
+        session.add(per)
+        
+        
+        session.commit()
+
+def toPersona( data):
+    per = Persona(
+        age = data["age"],
+        workclass = data['workclass'],
+        education=data["education"],
+        education_num=data["education.num"],
+        marital_status=data["marital.status"],
+        occupation=data["occupation"],
+        relationship=data["relationship"],
+        race=data["race"],
+        sex=data["sex"],
+        capital_gain=data["capital.gain"],
+        capital_loss=data["capital.loss"],
+        hours_per_week=data["hours.per.week"],
+        native_country=data["native.country"],
+        income=data["income"],
+        persona_desc=data["persona_desc"]
+        )
+    
+    return per
 
 if __name__ == "__main__":
     import json
     skel = '{"age": 31, "workclass": "Private", "fnlwgt": 399052, "education": "9th", "education.num": 5, "marital.status": "Married-civ-spouse", "occupation": "Farming-fishing", "relationship": "Wife", "race": "White", "sex": "Female", "capital.gain": 0, "capital.loss": 0, "hours.per.week": 42, "native.country": "United-States", "income": "<=50K", "probability": 6.457806879199508e-05}'
     data = json.loads(skel)
-    rep : PersonaRepository = PersonaRepository()
-    rep.savePersona(data)
+
+    savePersona(data)
