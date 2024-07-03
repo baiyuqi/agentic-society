@@ -96,6 +96,7 @@ class QuestionAnswerSummary(Base):
  
     def __repr__(self) -> str:
         return f"QuestionAnswer(id={self.id!r}, experiment_name={self.experiment_name!r}, persona_id={self.persona_id!r}, score={self.score!r})"
+
 if __name__ == "__main__":
     import asociety.repository.database as db
     Base.metadata.create_all(db.engine)

@@ -102,7 +102,13 @@ class Personality(Base):
  
     def __repr__(self) -> str:
         return f"Personality(persona_id={self.persona_id!r}, extraversion={self.extraversion!r}, agreeableness={self.agreeableness!r}, conscientiousness={self.conscientiousness!r}"
-
+def savePersonalities(ps):
+    from asociety.repository.database import engine
+    from sqlalchemy.orm import Session
+    with Session(engine) as session:
+        for p in ps:
+            session.add(p)
+        session.commit()
 if __name__ == "__main__":
     import asociety.repository.database as db
     Base.metadata.create_all(db.engine)
