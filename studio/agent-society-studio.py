@@ -1,11 +1,11 @@
 from tkinter import *
 from tkinter import ttk
-from tools.ui.select_persona import CreatePersonaGroup
-from tools.ui.select_question import CreateQuestionGroup
+from studio.select_persona import CreatePersonaGroup
+from studio.select_question import CreateQuestionGroup
 
 from asociety.generator.persona_generator import *
-from tools.ui.persona_sampling import PersonaSamplingDialog
-from tools.ui.create_experiment import CreateExperimentDialog
+from studio.persona_sampling import PersonaSamplingDialog
+from studio.create_experiment import CreateExperimentDialog
 from tkinter import font
 class MainWindow:        
     def __init__(self, root) -> None:
@@ -24,7 +24,7 @@ class MainWindow:
         self.root = root    
         self.main = ttk.Frame(root)   
         self.main.pack(fill=BOTH, expand=True)
-        from tools.ui.experiment_executor import ExperimentExecutorPanel
+        from studio.experiment_executor import ExperimentExecutorPanel
 
  
         self.PW = PW = ttk.PanedWindow(self.main, orient=HORIZONTAL)
@@ -36,13 +36,13 @@ class MainWindow:
         PW.add(self.left, weight=0)
         PW.add(self.right, weight=4)
         self.executor = ExperimentExecutorPanel(self.right)
-        from tools.ui.analysis_panel import AnalysisPanel
-        from tools.ui.data_browse import DataBrowser
+        from studio.analysis_panel import AnalysisPanel
+        from studio.data_browse import DataBrowser
         self.analsis = AnalysisPanel(self.right)
         self.browser = DataBrowser(self.right)
 
         self.treeView = self.tree(self.left)
-        from tools.ui.chatroom import Chatroom
+        from studio.chatroom import Chatroom
         self.chatroom = Chatroom(self.right)
 
         panels = {"question": self.browser, "persona":self.browser,"persona group":self.browser,"question group":self.browser,"experimentlist":self.browser,"experiment":self.executor,"analysis":self.analsis,"chatroom":self.chatroom}
