@@ -11,6 +11,13 @@ This repo is to support our work in applying language model agents in the resear
 4. 选取persona group和question group，定义experiment
 5. 执行experiment
 实验结果的提取分析目前，目前主要支持personality traits test， 不同experiment中对同一个persona的实验结果，在personality表中会覆盖，这一点需要引起注意。但是这仅仅是“实验结果提取分析”目前的一个临时安排，personality表也是一个综合提取personality traits test实验结果用的临时表，experiment本身的实验结果的原始数据quest-answer和quize-answer表本身，不同experiment的结果是互相不干扰的
+
+
+目前代码顶层三个包：
+1. asociety包，基础构件
+2. studio包， 桌面工作室
+3. tools包， 批量作业脚本
+
 #### 数据结构设计
 目前数据存放于data/db/agent-society.db中，sqlite数据库文件
 
