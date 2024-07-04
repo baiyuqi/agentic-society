@@ -15,8 +15,6 @@ To facilitate small-scale data experiments and result observation and analysis, 
 Currently, the extraction and analysis of experimental results mainly support personality traits tests. It is important to note that the experimental results for the same persona in different experiments will overwrite each other in the personality table. However, this is only a temporary arrangement for the "extraction and analysis of experimental results." The personality table is also a temporary table for comprehensively extracting the results of personality traits tests. The raw data of the experiment results, such as the quest-answer and quiz-answer tables, are not interfered with by the results of different experiments.
 
 
-Here is the translation to English:
-
 The current top-level three packages:
 
 1. asociety package, basic components
