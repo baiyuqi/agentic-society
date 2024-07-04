@@ -1,7 +1,4 @@
 import pandas as pd
-import numpy as np
-from typing import List,Dict
-import sqlite3
 
  
 class Selector:
@@ -36,9 +33,9 @@ class Selector:
 class QuestionSelector(Selector):
     def __init__(self, question_set) -> None:
      
-        con = sqlite3.connect("data/db/agentic_society.db")
+        from asociety.repository.database import engine
         sql = "SELECT * from question where question_set = '" + question_set + "'"
-        self.df = pd.read_sql_query(sql, con)
+        self.df = pd.read_sql_query(sql, engine)
         self.question_set = question_set
  
  

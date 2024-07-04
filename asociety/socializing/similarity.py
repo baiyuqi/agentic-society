@@ -1,7 +1,5 @@
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import OneHotEncoder
 
 # Define a User class with additional attributes
 class User:
