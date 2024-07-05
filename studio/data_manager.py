@@ -72,8 +72,10 @@ class DataManager:
 
         self.table.updateModel(TableModel(df))
         self.table.redraw()
-    def setData(self, item):
+        self.updateTree()
+    def setData(self, item, updateTree):
         self.appkey = item
+        self.updateTree = updateTree
         if(item == 'persona'):
             self.table.model.df = pd.read_sql_query("select * from persona limit 100", engine)
            

@@ -37,7 +37,7 @@ class DataBrowser:
         self.table = Table(bottom_frame, showtoolbar=True, showstatusbar=True)
         self.table.show()
         self.table.bind("<ButtonRelease-1>", self.on_row_click)
-    def setData(self, item):
+    def setData(self, item, updateTree):
         if(item == 'persona'):
             self.table.model.df = pd.read_sql_query("select * from persona limit 100", engine)
            

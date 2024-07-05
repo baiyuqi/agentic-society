@@ -34,7 +34,7 @@ class AnalysisPanel:
 
         canvas.mpl_connect("key_press_event", on_key_press)
 
-    def setData(self, experiment_name):
+    def setData(self, experiment_name, updateTree):
         from asociety.analysis.analysis import ExperimentSummary
         es = ExperimentSummary(experiment_name=experiment_name)
         data = es.statistics('education_num')

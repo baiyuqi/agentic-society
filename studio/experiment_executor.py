@@ -51,7 +51,7 @@ class ExperimentExecutorPanel:
 
         self.submit_button = Button(top_frame, text="reparse", command=self.reparse)
         self.submit_button.grid(row=2, column=2, columnspan=1, pady=10)       
-    def setData(self, ename):
+    def setData(self, ename, updateTree):
         
         from asociety.repository.database import engine
         from sqlalchemy.orm import Session

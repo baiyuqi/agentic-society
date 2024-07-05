@@ -144,7 +144,7 @@ class MainWindow:
                 p.main.pack(fill=BOTH, expand=True)
             else:
                 p.main.pack_forget()
-        panel.setData(appKey)
+        panel.setData(appKey,self.updateTree)
         
        
 
