@@ -52,6 +52,12 @@ class DataManager:
         submit_button = Button(left_top_frame, text="delete selected" , command=self.delete_selected)
         submit_button.grid(row=1, column=0, columnspan=1, pady=10)
     def delete_selected(self):
+        from tkinter import messagebox
+        response = messagebox.askokcancel("Confirmation", "Do you want to delete it?")
+        if not response:
+            return
+
+      
         row = self.table.getSelectedRowData()
         index = self.table.getSelectedRow()
         id = self.table.model.df.loc[index]['id']
@@ -62,6 +68,7 @@ class DataManager:
             ps = session.execute(text('delete from ' + self.table_name + " where id = " + str(id)))
             session.commit()
         df = self.table.model.df.drop(index)
+        df.reset_index(drop=True, inplace=True)
 
         self.table.updateModel(TableModel(df))
         self.table.redraw()
