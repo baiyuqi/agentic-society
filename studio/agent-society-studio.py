@@ -38,14 +38,15 @@ class MainWindow:
         self.executor = ExperimentExecutorPanel(self.right)
         from studio.analysis_panel import AnalysisPanel
         from studio.data_browse import DataBrowser
+        from studio.data_manager import DataManager
         self.analsis = AnalysisPanel(self.right)
         self.browser = DataBrowser(self.right)
-
+        self.manager = DataManager(self.right)
         self.treeView = self.tree(self.left)
         from studio.chatroom import Chatroom
         self.chatroom = Chatroom(self.right)
 
-        panels = {"question": self.browser, "persona":self.browser,"persona group":self.browser,"question group":self.browser,"experimentlist":self.browser,"experiment":self.executor,"analysis":self.analsis,"chatroom":self.chatroom}
+        panels = {"question": self.browser, "persona":self.browser,"persona group":self.manager,"question group":self.manager,"experimentlist":self.manager,"experiment":self.executor,"analysis":self.analsis,"chatroom":self.chatroom}
         self.panels = panels
 
     def donothing(self):
