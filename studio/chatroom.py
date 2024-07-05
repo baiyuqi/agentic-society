@@ -59,19 +59,22 @@ class Chatroom:
     def fill_personas(self,data,fp):
         self.tree.delete(*self.tree.get_children())
         for person in fp:
-            self.tree.insert("", "end", values=person)
+            data = [person.id,  person.sex, person.age,person.occupation]
+            self.tree.insert("", "end", values=data)
         self.top_right_frame.update()
     def persona_table(self, parent):
 
-        tree = ttk.Treeview(parent, columns=("id", "Name", "Age", "Occupation"), show='headings')
+        tree = ttk.Treeview(parent, columns=("id", "Sex","Age", "Occupation"), show='headings')
         tree.heading("id", text="id")
-        tree.heading("Name", text="Name")
+        
+        tree.heading("Sex", text="Sex")
         tree.heading("Age", text="Age")
         tree.heading("Occupation", text="Occupation")
 
         # Set column widths
         tree.column("id", width=150)
-        tree.column("Name", width=150)
+        
+        tree.column("Sex", width=100)
         tree.column("Age", width=100)
         tree.column("Occupation", width=150)
 
