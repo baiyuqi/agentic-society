@@ -22,7 +22,7 @@ class RandomSelect:
         import tkinter as tk
         if(mode >0):
             # Label for ComboBox
-            self.column_label = tk.Label(root, text="Select an option:")
+            self.column_label = ttk.Label(root, text="Select an option:",style='TLabel')
             self.column_label.grid(row=0, column=0, padx=10, pady=5, sticky='w')
 
             self.column_var = tk.StringVar()
@@ -34,7 +34,7 @@ class RandomSelect:
                 self.column_var.trace('w', self.update_value)
 
                 # Label for second ComboBox
-                self.value_label = tk.Label(root, text="Select an item:")
+                self.value_label = ttk.Label(root, text="Select an item:",style='TLabel')
                 self.value_label.grid(row=1, column=0, padx=10, pady=5, sticky='w')
 
                 # Second ComboBox
@@ -45,7 +45,7 @@ class RandomSelect:
         # Update the second combo box initially
 
         # Label for Entry
-        self.entry_label = tk.Label(root, text="Enter an integer:")
+        self.entry_label = ttk.Label(root, text="Enter an integer:",style='TLabel')
         self.entry_label.grid(row=2, column=0, padx=10, pady=5, sticky='w')
 
         # Entry
@@ -56,7 +56,7 @@ class RandomSelect:
         
 
         # Submit Button
-        self.submit_button = tk.Button(root, text="create", command=self.create)
+        self.submit_button = ttk.Button(root, text="create", command=self.create,style='TButton')
         self.submit_button.grid(row=3, column=0, columnspan=2, pady=10)
  
     def update_value(self, *args):
@@ -95,27 +95,27 @@ class SelectPersona:
         paned_window.pack(fill=BOTH, expand=True)
         
         # 创建上 Pane 的内容
-        self.totop_frame = top_frame = ttk.Frame(paned_window)
+        self.totop_frame = top_frame = ttk.Frame(paned_window,style="TFrame")
         
         
         # 创建下 Pane 的内容
-        bottom_frame = ttk.Frame(paned_window)
+        bottom_frame = ttk.Frame(paned_window,style="TFrame")
         
         
         # 将两个 Frame 添加到 PanedWindow
         paned_window.add(top_frame)
         paned_window.add(bottom_frame)
-        self.all = Button(top_frame, text='all', command=self.all)
+        self.all = ttk.Button(top_frame, text='all', command=self.all,style='TButton')
 
         self.all.grid(row=0, column=0, padx=10, pady=5, sticky='w')
-        self.byrandom = Button(top_frame, text='complete random', command=self.randomly)
+        self.byrandom = ttk.Button(top_frame, text='complete random', command=self.randomly,style='TButton')
 
         self.byrandom.grid(row=0, column=1, padx=10, pady=5, sticky='w')
 
-        self.bycolumn = Button(top_frame, text='by column', command=self.by_column)
+        self.bycolumn = ttk.Button(top_frame, text='by column', command=self.by_column,style='TButton')
 
         self.bycolumn.grid(row=0, column=2, padx=10, pady=5, sticky='w')
-        self.oncolmn = Button(top_frame, text='on column', command=self.on_column)
+        self.oncolmn = ttk.Button(top_frame, text='on column', command=self.on_column,style='TButton')
 
         self.oncolmn.grid(row=0, column=3, padx=10, pady=5, sticky='w')
 
@@ -162,7 +162,7 @@ class CreatePersonaGroup:
 
 
         # Label for Entry
-        self.name_label = Label(bottom_frame, text="Enter Name:")
+        self.name_label = ttk.Label(bottom_frame, text="Enter Name:",style='TLabel')
         self.name_label.grid(row=0, column=0, padx=10, pady=5, sticky='w')
 
         # Entry
@@ -171,7 +171,7 @@ class CreatePersonaGroup:
         self.name_entry.grid(row=0, column=1, padx=10, pady=5, sticky='w')
 
         # Label for Entry
-        self.desc_label = Label(bottom_frame, text="Enter Description:")
+        self.desc_label = ttk.Label(bottom_frame, text="Enter Description:",style='TLabel')
         self.desc_label.grid(row=0, column=2, padx=10, pady=5, sticky='w')
 
         # Entry
@@ -179,7 +179,7 @@ class CreatePersonaGroup:
         self.desc_entry = ttk.Entry(bottom_frame, textvariable=self.desc_var)
         self.desc_entry.grid(row=0, column=3, padx=10, pady=5, sticky='w')
 
-        self.submit_button = Button(bottom_frame, text="create", command=self.create)
+        self.submit_button = ttk.Button(bottom_frame, text="create", command=self.create)
         self.submit_button.grid(row=1, column=0, columnspan=2, pady=10)
 
 

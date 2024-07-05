@@ -13,8 +13,8 @@ class DataBrowser:
         inner_panedwindow.pack(fill=BOTH, expand=True)
 
         # Create two frames to be added to the inner PanedWindow
-        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
-        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
+        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
+        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
 
         # Add the frames to the inner PanedWindow
         inner_panedwindow.add(top_frame, weight=1)

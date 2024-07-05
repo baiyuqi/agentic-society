@@ -13,8 +13,8 @@ class DataManager:
         inner_panedwindow.pack(fill=BOTH, expand=True)
 
         # Create two frames to be added to the inner PanedWindow
-        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
-        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
+        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
+        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
 
         # Add the frames to the inner PanedWindow
         inner_panedwindow.add(top_frame, weight=1)
@@ -22,8 +22,8 @@ class DataManager:
 
 
         toppane = inner_panedwindow = ttk.PanedWindow(top_frame, orient=HORIZONTAL)
-        left_top_frame = ttk.Frame(toppane, width=400, height=200, relief=SUNKEN)
-        right_top_frame = ttk.Frame(toppane, width=400, height=200, relief=SUNKEN)
+        left_top_frame = ttk.Frame(toppane, width=400, height=200, relief=SUNKEN,style='TFrame')
+        right_top_frame = ttk.Frame(toppane, width=400, height=200, relief=SUNKEN,style='TFrame')
 
         # Add the frames to the inner PanedWindow
         toppane.add(left_top_frame, weight=1)
@@ -49,7 +49,7 @@ class DataManager:
 
 
 
-        submit_button = Button(left_top_frame, text="delete selected" , command=self.delete_selected)
+        submit_button = ttk.Button(left_top_frame, text="delete selected" , command=self.delete_selected,style='TButton')
         submit_button.grid(row=1, column=0, columnspan=1, pady=10)
     def delete_selected(self):
         from tkinter import messagebox

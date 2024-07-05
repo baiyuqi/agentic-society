@@ -22,7 +22,7 @@ class MainWindow:
         style.configure('TNotebook.Tab', padding=[10, 5], width=20)
         self.menu(root)
         self.root = root    
-        self.main = ttk.Frame(root)   
+        self.main = ttk.Frame(root,style='TFrame')   
         self.main.pack(fill=BOTH, expand=True)
         from studio.experiment_executor import ExperimentExecutorPanel
 
@@ -30,8 +30,8 @@ class MainWindow:
         self.PW = PW = ttk.PanedWindow(self.main, orient=HORIZONTAL)
         PW.pack(fill=BOTH, expand=True)
 
-        self.left = ttk.Frame(PW, width=75, height=300, relief=SUNKEN)
-        self.right = ttk.Frame(PW, width=400, height=300, relief=SUNKEN)
+        self.left = ttk.Frame(PW, width=75, height=300, relief=SUNKEN,style='TFrame')
+        self.right = ttk.Frame(PW, width=400, height=300, relief=SUNKEN,style='TFrame')
 
         PW.add(self.left, weight=0)
         PW.add(self.right, weight=4)
@@ -150,7 +150,16 @@ class MainWindow:
 
 if __name__ == "__main__":
     root = Tk()
-
+       
+    # Set style
+    style = ttk.Style()
+    style.theme_use('clam')  # Use 'clam' theme as base
+    
+    # Customizing the theme
+    style.configure('TFrame', background='#E8E8E8')
+    style.configure('TButton', font=('Helvetica', 12), background='#E8E8E8', foreground='black', borderwidth=0)
+    style.map('TButton', background=[('active', '#CFCFCF')], relief=[('pressed', 'sunken'), ('!pressed', 'flat')])
+    style.configure('TLabel', background='#E8E8E8', font=('Helvetica', 12), foreground='black')
     MainWindow(root)
     
     root.state('zoomed')

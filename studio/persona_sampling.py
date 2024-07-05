@@ -18,24 +18,24 @@ class PersonaSamplingDialog:
         paned_window.pack(fill=BOTH, expand=True)
         
         # 创建上 Pane 的内容
-        top_frame = ttk.Frame(paned_window)
+        top_frame = ttk.Frame(paned_window,style='TFrame')
         
         
         # 创建下 Pane 的内容
-        bottom_frame = ttk.Frame(paned_window)
+        bottom_frame = ttk.Frame(paned_window,style='TFrame')
         
         
         # 将两个 Frame 添加到 PanedWindow
         paned_window.add(top_frame)
         paned_window.add(bottom_frame)
 
-        self.myLabel = Label(top_frame, text='Enter number to sampling')
+        self.myLabel = Label(top_frame, text='Enter number to sampling' )
         self.myLabel.pack()
 
         self.myEntryBox = Entry(top_frame)
         self.myEntryBox.pack(padx=10,pady=10)
 
-        self.mySubmitButton = Button(top_frame, text='Submit', command=self.asncsampling)
+        self.mySubmitButton = Button(top_frame, text='Submit', command=self.asncsampling,style='TButton')
 
         self.mySubmitButton.pack(padx=10,pady=10)
         self.progressbar = ttk.Progressbar(top_frame,mode="indeterminate")

@@ -24,7 +24,7 @@ class RandomSelect:
 
         if(mode >0):
             # Label for ComboBox
-            self.column_label = tk.Label(root, text="Select an option:")
+            self.column_label = tk.Label(root, text="Select an option:" )
             self.column_label.grid(row=0, column=0, padx=10, pady=5, sticky='w')
 
             self.column_var = tk.StringVar()
@@ -36,7 +36,7 @@ class RandomSelect:
                 self.column_var.trace('w', self.update_value)
 
                 # Label for second ComboBox
-                self.value_label = tk.Label(root, text="Select an item:")
+                self.value_label = tk.Label(root, text="Select an item:" )
                 self.value_label.grid(row=1, column=0, padx=10, pady=5, sticky='w')
 
                 # Second ComboBox
@@ -47,7 +47,7 @@ class RandomSelect:
         # Update the second combo box initially
 
         # Label for Entry
-        self.entry_label = tk.Label(root, text="Enter an integer:")
+        self.entry_label = tk.Label(root, text="Enter an integer:" )
         self.entry_label.grid(row=2, column=0, padx=10, pady=5, sticky='w')
 
         # Entry
@@ -58,7 +58,7 @@ class RandomSelect:
         
 
         # Submit Button
-        self.submit_button = tk.Button(root, text="create", command=self.create)
+        self.submit_button = tk.Button(root, text="create", command=self.create,style='TButton')
         self.submit_button.grid(row=3, column=0, columnspan=2, pady=10)
  
     def update_value(self, *args):
@@ -97,11 +97,11 @@ class SelectQuestion:
         paned_window.pack(fill=BOTH, expand=True)
         
         # 创建上 Pane 的内容
-        self.totop_frame = top_frame = ttk.Frame(paned_window)
+        self.totop_frame = top_frame = ttk.Frame(paned_window,style='TFrame')
         
         
         # 创建下 Pane 的内容
-        bottom_frame = ttk.Frame(paned_window)
+        bottom_frame = ttk.Frame(paned_window,style='TFrame')
         
         
         # 将两个 Frame 添加到 PanedWindow
@@ -109,7 +109,7 @@ class SelectQuestion:
         paned_window.add(bottom_frame)
 
         
-        self.set_label = Label(top_frame, text="Select an option:")
+        self.set_label = ttk.Label(top_frame, text="Select an option:" )
         self.set_label.grid(row=0, column=0, padx=10, pady=5, sticky='w')
 
         self.set_var = StringVar()
@@ -118,18 +118,18 @@ class SelectQuestion:
         self.set_box.current(0)
         self.set_box.grid(row=0, column=1, padx=10, pady=5, sticky='w')
    
-        self.allbutton = Button(top_frame, text='complete random', command=self.all)
+        self.allbutton = ttk.Button(top_frame, text='complete random', command=self.all,style='TButton')
 
         self.allbutton.grid(row=1, column=0, padx=10, pady=5, sticky='w')
 
-        self.byrandom = Button(top_frame, text='complete random', command=self.randomly)
+        self.byrandom = ttk.Button(top_frame, text='complete random', command=self.randomly,style='TButton')
 
         self.byrandom.grid(row=1, column=1, padx=10, pady=5, sticky='w')
 
-        self.bycolumn = Button(top_frame, text='by column', command=self.by_column)
+        self.bycolumn = ttk.Button(top_frame, text='by column', command=self.by_column,style='TButton')
 
         self.bycolumn.grid(row=1, column=2, padx=10, pady=5, sticky='w')
-        self.oncolmn = Button(top_frame, text='on column', command=self.on_column)
+        self.oncolmn = ttk.Button(top_frame, text='on column', command=self.on_column,style='TButton')
 
         self.oncolmn.grid(row=1, column=3, padx=10, pady=5, sticky='w')
 
@@ -177,8 +177,8 @@ class CreateQuestionGroup:
         inner_panedwindow.pack(fill=BOTH, expand=True)
 
         # Create two frames to be added to the inner PanedWindow
-        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
-        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
+        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
+        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
 
         # Add the frames to the inner PanedWindow
         inner_panedwindow.add(top_frame, weight=5)
@@ -188,7 +188,7 @@ class CreateQuestionGroup:
 
 
    # Label for Entry
-        self.name_label = Label(bottom_frame, text="Enter Name:")
+        self.name_label = ttk.Label(bottom_frame, text="Enter Name:" )
         self.name_label.grid(row=0, column=0, padx=10, pady=5, sticky='w')
 
         # Entry
@@ -197,7 +197,7 @@ class CreateQuestionGroup:
         self.name_entry.grid(row=0, column=1, padx=10, pady=5, sticky='w')
 
         # Label for Entry
-        self.desc_label = Label(bottom_frame, text="Enter Description:")
+        self.desc_label = ttk.Label(bottom_frame, text="Enter Description:" )
         self.desc_label.grid(row=0, column=2, padx=10, pady=5, sticky='w')
 
         # Entry
@@ -205,10 +205,10 @@ class CreateQuestionGroup:
         self.desc_entry = ttk.Entry(bottom_frame, textvariable=self.desc_var)
         self.desc_entry.grid(row=0, column=3, padx=10, pady=5, sticky='w')
 
-        self.submit_button = Button(bottom_frame, text="view sheet", command=self.view_sheet)
+        self.submit_button = ttk.Button(bottom_frame, text="view sheet", command=self.view_sheet,style='TButton')
         self.submit_button.grid(row=1, column=0, columnspan=2, pady=10)
 
-        self.submit_button = Button(bottom_frame, text="create", command=self.create)
+        self.submit_button = ttk.Button(bottom_frame, text="create", command=self.create,style='TButton')
         self.submit_button.grid(row=1, column=1, columnspan=2, pady=10)
 
     def view_sheet(self):

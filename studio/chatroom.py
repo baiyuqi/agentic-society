@@ -13,16 +13,16 @@ class Chatroom:
         inner_panedwindow.pack(fill=BOTH, expand=True)
 
         # Create two frames to be added to the inner PanedWindow
-        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
-        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
+        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
+        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
 
         # Add the frames to the inner PanedWindow
         inner_panedwindow.add(top_frame, weight=1)
         inner_panedwindow.add(bottom_frame, weight=1)
 
         top_panedwindow = ttk.PanedWindow(top_frame, orient=HORIZONTAL)
-        top_left_frame = ttk.Frame(top_panedwindow, width=400, height=200)
-        top_right_frame = self.top_right_frame = ttk.Frame(top_panedwindow, width=400, height=200)
+        top_left_frame = ttk.Frame(top_panedwindow, width=400, height=200,style='TFrame')
+        top_right_frame = self.top_right_frame = ttk.Frame(top_panedwindow, width=400, height=200,style='TFrame')
         top_panedwindow.add(top_left_frame, weight=1)
         top_panedwindow.add(top_right_frame, weight=1)
         top_panedwindow.pack(fill=BOTH, expand=True)  # Pack the top_panedwindow
@@ -42,18 +42,18 @@ class Chatroom:
 
 
       
-        self.submit_button = Button(bottom_frame, text="select chatters" , command=self.select_chatters)
+        self.submit_button = ttk.Button(bottom_frame, text="select chatters" , command=self.select_chatters,style='TButton')
         self.submit_button.grid(row=1, column=0, columnspan=1, pady=10)
 
-        self.submit_button = Button(bottom_frame, text="start chat", command=self.start_chat)
+        self.submit_button = ttk.Button(bottom_frame, text="start chat", command=self.start_chat,style='TButton')
         self.submit_button.grid(row=1, column=2, columnspan=1, pady=10)
-        self.submit_button = Button(bottom_frame, text="stop chat", command=self.stop_chat)
+        self.submit_button = ttk.Button(bottom_frame, text="stop chat", command=self.stop_chat,style='TButton')
         self.submit_button.grid(row=1, column=4, columnspan=1, pady=10)
 
-        self.submit_button = Button(bottom_frame, text="chat summary", command=self.chat_summary)
+        self.submit_button = ttk.Button(bottom_frame, text="chat summary", command=self.chat_summary,style='TButton')
         self.submit_button.grid(row=1, column=6, columnspan=1, pady=10)
 
-        self.submit_button = Button(bottom_frame, text="query friends", command=self.query_friends)
+        self.submit_button = ttk.Button(bottom_frame, text="query friends", command=self.query_friends,style='TButton')
         self.submit_button.grid(row=1, column=8, columnspan=1, pady=10)
         self.tree = self.persona_table(top_right_frame)
     def fill_personas(self,data,fp):

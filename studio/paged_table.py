@@ -12,15 +12,15 @@ class PagedTable:
         self.total_pages = (len(df) + self.rows_per_page - 1) // self.rows_per_page
         
         # Create table
-        self.frame = tk.Frame(self.root)
+        self.frame = tk.Frame(self.root,style='TFrame')
         self.frame.pack(fill='both', expand=True)
         self.table = Table(self.frame, dataframe=self.get_page_data(), showtoolbar=True, showstatusbar=True)
         self.table.show()
         
         # Pagination controls
-        self.controls = tk.Frame(self.root)
+        self.controls = tk.Frame(self.root,style='TFrame')
         self.controls.pack()
-        self.prev_button = tk.Button(self.controls, text="Previous", command=self.previous_page)
+        self.prev_button = tk.Button(self.controls, text="Previous", command=self.previous_page,style='TButton')
         self.prev_button.pack(side=tk.LEFT)
         self.next_button = tk.Button(self.controls, text="Next", command=self.next_page)
         self.next_button.pack(side=tk.LEFT)

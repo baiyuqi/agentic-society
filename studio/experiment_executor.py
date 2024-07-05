@@ -16,8 +16,8 @@ class ExperimentExecutorPanel:
         #inner_panedwindow.pack(fill=BOTH, expand=True)
 
         # Create two frames to be added to the inner PanedWindow
-        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
-        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
+        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
+        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
 
         # Add the frames to the inner PanedWindow
         inner_panedwindow.add(top_frame, weight=1)
@@ -46,10 +46,10 @@ class ExperimentExecutorPanel:
         self.desc_entry = ttk.Entry(top_frame, textvariable=self.desc_var)
         self.desc_entry.grid(row=1, column=1, padx=10, pady=5, sticky='w')
 
-        self.submit_button = Button(top_frame, text="execute", command=self.execute)
+        self.submit_button = ttk.Button(top_frame, text="execute", command=self.execute,style='TButton')
         self.submit_button.grid(row=2, column=0, columnspan=1, pady=10)
 
-        self.submit_button = Button(top_frame, text="reparse", command=self.reparse)
+        self.submit_button = ttk.Button(top_frame, text="reparse", command=self.reparse,style='TButton')
         self.submit_button.grid(row=2, column=2, columnspan=1, pady=10)       
     def setData(self, ename, updateTree):
         

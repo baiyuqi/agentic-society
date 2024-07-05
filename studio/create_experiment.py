@@ -12,7 +12,7 @@ class SelectPersonaGroup:
         import tkinter as tk
         self.pdf =  pd.read_sql_table(table_name='persona_group',con=engine) 
         self.qdf =  pd.read_sql_table(table_name='question_group',con=engine) 
-        self.column_label = tk.Label(root, text="Select an option:")
+        self.column_label = ttk.Label(root, text="Select an option:" )
         self.column_label.grid(row=0, column=0, padx=10, pady=5, sticky='w')
 
         self.column_var = tk.StringVar()
@@ -24,7 +24,7 @@ class SelectPersonaGroup:
         self.column_var.trace('w', self.update_value)
 
         # Label for second ComboBox
-        self.value_label = tk.Label(root, text="Select an item:")
+        self.value_label = ttk.Label(root, text="Select an item:",style="TLabel" )
         self.value_label.grid(row=1, column=0, padx=10, pady=5, sticky='w')
 
         # Second ComboBox
@@ -54,8 +54,8 @@ class CreateExperimentDialog:
         inner_panedwindow.pack(fill=BOTH, expand=True)
 
         # Create two frames to be added to the inner PanedWindow
-        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
-        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN)
+        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
+        bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
 
         # Add the frames to the inner PanedWindow
         inner_panedwindow.add(top_frame, weight=1)
@@ -69,7 +69,7 @@ class CreateExperimentDialog:
        
 
         # Label for second ComboBox
-        self.etype_label = Label(top_frame, text="Select quiz or per question:")
+        self.etype_label = ttk.Label(top_frame, text="Select quiz or per question:" ,style="TLabel")
         self.etype_label.grid(row=2, column=0, padx=10, pady=5, sticky='w')
 
         # Second ComboBox
@@ -79,7 +79,7 @@ class CreateExperimentDialog:
         self.etype_box['values'] = ('quiz_sheet','per_question')
 
         # Label for Entry
-        self.name_label = Label(top_frame, text="Enter Name:")
+        self.name_label = ttk.Label(top_frame, text="Enter Name:" ,style="TLabel")
         self.name_label.grid(row=3, column=0, padx=10, pady=5, sticky='w')
 
         # Entry
@@ -88,7 +88,7 @@ class CreateExperimentDialog:
         self.name_entry.grid(row=3, column=1, padx=10, pady=5, sticky='w')
 
         # Label for Entry
-        self.desc_label = Label(top_frame, text="Enter Description:")
+        self.desc_label = ttk.Label(top_frame, text="Enter Description:",style="TLabel" )
         self.desc_label.grid(row=4, column=0, padx=10, pady=5, sticky='w')
 
         # Entry
@@ -96,10 +96,10 @@ class CreateExperimentDialog:
         self.desc_entry = ttk.Entry(top_frame, textvariable=self.desc_var)
         self.desc_entry.grid(row=4, column=1, padx=10, pady=5, sticky='w')
 
-        self.create_button = Button(top_frame, text="create", command=self.create)
+        self.create_button = ttk.Button(top_frame, text="create", command=self.create,style='TButton')
         self.create_button.grid(row=5, column=0, columnspan=1, pady=10)
         
-        self.save_button = Button(top_frame, text="save", command=self.save)
+        self.save_button = ttk.Button(top_frame, text="save", command=self.save,style='TButton')
         self.save_button.grid(row=5, column=2, columnspan=1, pady=10)
     def create_byquestion(self):
         from asociety.repository.database import engine
