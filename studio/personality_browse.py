@@ -61,6 +61,7 @@ class PersonalityBrowser:
         self.canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
 
     def plot_fill(self, result):
+        colors = ['orange','green','magenta','red','blue']
   
         from asociety.personality.personality_quiz import PersonalityResult
         pr = PersonalityResult(result=result)
@@ -75,7 +76,7 @@ class PersonalityBrowser:
             data = all[i]
             #axs[row, col].set_ylim([0, 100])
             self.axs[row, col].cla()
-            self.axs[row, col].barh(data.keys(), data.values())
+            self.axs[row, col].barh(data.keys(), data.values(), color=colors[i])
            
    
 
