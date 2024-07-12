@@ -150,3 +150,4 @@ class PersonalityResult:
                 int(big5[0].get("openness").get("traits")[5].get("liberalism")),
             ]
         self.O = {O[i]:od[i] for i in range(0, 7)}
+        self.all = [self.E, self.A,self.C,self.N,self.O]

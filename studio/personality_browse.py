@@ -12,11 +12,11 @@ class PersonalityBrowser:
         inner_panedwindow.pack(fill=BOTH, expand=True)
 
         # Create two frames to be added to the inner PanedWindow
-        top_frame = self.top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
+        top_frame = self.top_frame = ttk.Frame(inner_panedwindow, width=400, height=500, relief=SUNKEN,style='TFrame')
         bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
 
         # Add the frames to the inner PanedWindow
-        inner_panedwindow.add(top_frame, weight=1)
+        inner_panedwindow.add(top_frame, weight=2)
         inner_panedwindow.add(bottom_frame, weight=1)
 
 
@@ -31,7 +31,7 @@ class PersonalityBrowser:
         df = pd.read_sql_query("select * from personality", engine)
         self.table.model.df = df
         self.table.redraw()
- 
+        self.plot_empty()
     def setData(self, item, updateTree):
 
         self.table.redraw()
@@ -44,30 +44,41 @@ class PersonalityBrowser:
             from asociety.personality.ipipneo.quiz import plot_results_by
             import json
             per = json.loads(pjson)
-            self.plot(result=per)
+            self.plot_fill(result=per)
 
-    def plot(self, result):
+    def plot_empty(self):
         from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
         import matplotlib.pyplot as plt
         
-        fig, axs = plt.subplots(3, 2)
+        self.fig, self.axs = plt.subplots(3, 2)
+     
+        self.axs[2,1].set_axis_off()    
+        for ax in self.axs.flat:
+            ax.set(xlabel='age', ylabel='score')
+        self.fig.tight_layout()
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.top_frame)
+        self.canvas.draw()
+        self.canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+
+    def plot_fill(self, result):
+  
+        from asociety.personality.personality_quiz import PersonalityResult
+        pr = PersonalityResult(result=result)
+        all = pr.all
         for i in range(0, 5):
             
 
 
             row = int(i / 2)
             col = i % 2
-            from asociety.personality.personality_quiz import PersonalityResult
-            pr = PersonalityResult(result=result)
-            data = pr.E
+            
+            data = all[i]
             #axs[row, col].set_ylim([0, 100])
-            axs[row, col].barh(data.keys(), data.values())
+            self.axs[row, col].cla()
+            self.axs[row, col].barh(data.keys(), data.values())
            
    
-        axs[2,1].set_axis_off()    
-        for ax in axs.flat:
-            ax.set(xlabel='age', ylabel='score')
-        fig.tight_layout()
-        plt.show()
-        return fig
+
+
+        self.canvas.draw()
 
