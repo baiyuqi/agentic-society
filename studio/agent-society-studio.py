@@ -45,8 +45,9 @@ class MainWindow:
         self.treeView = self.tree(self.left)
         from studio.chatroom import Chatroom
         self.chatroom = Chatroom(self.right)
-
-        panels = {"question": self.browser, "persona":self.browser,"persona group":self.manager,"question group":self.manager,"experimentlist":self.manager,"experiment":self.executor,"analysis":self.analsis,"chatroom":self.chatroom}
+        from studio.personality_browse import PersonalityBrowser
+        self.personality = PersonalityBrowser(self.right)
+        panels = {"question": self.browser, "persona":self.browser,"persona group":self.manager,"question group":self.manager,"experimentlist":self.manager,"experiment":self.executor,"analysis":self.analsis,"chatroom":self.chatroom,'personality':self.personality}
         self.panels = panels
 
     def donothing(self):
@@ -120,12 +121,15 @@ class MainWindow:
             for i,  e in enumerate(es):
                 tv.insert('experimentlist', str(i), 'experiment_' + e.name, text=e.name)
 
-        tv.insert('', '3', 'chatroom', text='chatroom')
         
-        tv.insert('', '4', 'analysislist', text='analysis')
+        tv.insert('', '3', 'analysislist', text='analysis')
+        tv.insert('analysislist', '0', 'analysis-exp', text='experiments analysys')
+
         for i,  e in enumerate(es):
-                tv.insert('analysislist', str(i), 'analysis_' + e.name, text=e.name)
-       
+                tv.insert('analysis-exp', str(i), 'analysis_' + e.name, text=e.name)
+        tv.insert('analysislist', '1', 'personality', text='personality')   
+
+        tv.insert('', '4', 'chatroom', text='chatroom')
     def treeSelect(self, event):
         from asociety.repository.database import engine
         items = self.treeView.selection()
