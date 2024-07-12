@@ -30,6 +30,10 @@ class DataBrowser:
         buttom_pane.add(right_bottom_frame, weight=1)
         buttom_pane.pack(fill=BOTH, expand=True)  # Pack the top_panedwindow
 
+
+
+        
+
         # Create a scrolled text widget
         self.text_widget = scrolledtext.ScrolledText(top_frame, wrap=WORD, bg='#1E1E1E', fg='#DADADA', 
                                                      insertbackground='#DADADA', font=('Helvetica', 14),

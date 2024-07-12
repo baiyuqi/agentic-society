@@ -49,8 +49,10 @@ class MainWindow:
         self.personality = PersonalityBrowser(self.right)
         from studio.personality_analysis import PersonalityAnalysis
         self.personality_analysis = PersonalityAnalysis(self.right)
+        from studio.question_browse import QuestionBrowser
+        self.questionbrowser = QuestionBrowser(self.right)
 
-        panels = {"question": self.browser, "persona":self.browser,"persona group":self.manager,"question group":self.manager,"experimentlist":self.manager,"experiment":self.executor,"analysis":self.analsis,"chatroom":self.chatroom,'personality':self.personality,'personality-analysis':self.personality_analysis}
+        panels = {"question": self.questionbrowser, "persona":self.browser,"persona group":self.manager,"question group":self.manager,"experimentlist":self.manager,"experiment":self.executor,"analysis":self.analsis,"chatroom":self.chatroom,'personality':self.personality,'personality-analysis':self.personality_analysis}
         self.panels = panels
 
     def donothing(self):
