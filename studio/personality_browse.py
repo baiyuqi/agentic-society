@@ -41,10 +41,10 @@ class PersonalityBrowser:
 
         if row_clicked is not None:
             pjson = self.table.model.df.iloc[row_clicked]['personality_json']
-            from asociety.personality.ipipneo.quiz import plot_results_by
-            import json
-            per = json.loads(pjson)
-            self.plot_fill(result=per)
+            import threading
+            task_thread = threading.Thread(target=self.plot_fill,kwargs={'pjson':pjson})
+            task_thread.start()
+      
 
     def plot_empty(self):
         from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -60,11 +60,15 @@ class PersonalityBrowser:
         self.canvas.draw()
         self.canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
 
-    def plot_fill(self, result):
+    def plot_fill(self,pjson):
+        
+        from asociety.personality.ipipneo.quiz import plot_results_by
+        import json
+        per = json.loads(pjson)
         colors = ['orange','green','magenta','red','blue']
         titles = ['openness' ,'conscientiousness' ,'extraversion', 'agreeableness', 'neuroticism','']
         from asociety.personality.personality_quiz import PersonalityResult
-        pr = PersonalityResult(result=result)
+        pr = PersonalityResult(result=per)
         all = pr.all
         for i in range(0, 5):
             

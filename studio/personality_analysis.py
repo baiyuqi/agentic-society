@@ -48,7 +48,7 @@ class PersonalityAnalysis:
             self.axs[row, col].plot(x,yvals,'r')
             self.axs[row, col].set(xlabel='age', ylabel='score')
             self.axs[row, col].set_title(titles[i])
-        
+        self.canvas.draw()
 
     def plot_empty(self):
         from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
