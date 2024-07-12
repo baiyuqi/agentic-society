@@ -12,25 +12,12 @@ class PersonalityBrowser:
         inner_panedwindow.pack(fill=BOTH, expand=True)
 
         # Create two frames to be added to the inner PanedWindow
-        top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
+        top_frame = self.top_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
         bottom_frame = ttk.Frame(inner_panedwindow, width=400, height=200, relief=SUNKEN,style='TFrame')
 
         # Add the frames to the inner PanedWindow
         inner_panedwindow.add(top_frame, weight=1)
         inner_panedwindow.add(bottom_frame, weight=1)
-
-        # Create a scrolled text widget
-        self.text_widget = scrolledtext.ScrolledText(top_frame, wrap=WORD, bg='#1E1E1E', fg='#DADADA', 
-                                                     insertbackground='#DADADA', font=('Helvetica', 14),
-                                                     selectbackground='#5A5A5A', selectforeground='#FFFFFF', 
-                                                     relief=FLAT, padx=10, pady=10)
-
-        self.text_widget.pack(expand=True, fill=BOTH)
-
-        # Add some sample text
-        sample_text = """Welcome to Agentic Society!
-        """
-        self.text_widget.insert(END, sample_text)
 
 
         self.table = Table(bottom_frame, showtoolbar=True, showstatusbar=True)
@@ -44,18 +31,43 @@ class PersonalityBrowser:
         df = pd.read_sql_query("select * from personality", engine)
         self.table.model.df = df
         self.table.redraw()
-
+ 
     def setData(self, item, updateTree):
 
         self.table.redraw()
     def on_row_click(self, event):
         # 获取点击的位置
         row_clicked = self.table.get_row_clicked(event)
-        col_clicked = self.table.get_col_clicked(event)
-        if row_clicked is not None and col_clicked is not None:
-            # 处理点击事件
-            print(f"Clicked row: {row_clicked}, column: {col_clicked}")
-            print(f"Row data: {self.table.model.df.iloc[row_clicked]}")
-           
-            self.text_widget.delete(1.0, END)
-            self.text_widget.insert(END, self.table.model.df.iloc[row_clicked][col_clicked])
+
+        if row_clicked is not None:
+            pjson = self.table.model.df.iloc[row_clicked]['personality_json']
+            from asociety.personality.ipipneo.quiz import plot_results_by
+            import json
+            per = json.loads(pjson)
+            self.plot(result=per)
+
+    def plot(self, result):
+        from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+        import matplotlib.pyplot as plt
+        
+        fig, axs = plt.subplots(2, 3)
+        for i in range(0, 5):
+            
+
+
+            row = int(i / 3)
+            col = i % 3
+            from asociety.personality.personality_quiz import PersonalityResult
+            pr = PersonalityResult(result=result)
+            data = pr.E
+            #axs[row, col].set_ylim([0, 100])
+            axs[row, col].bar(range(len(data)), data.values(), align='center', width=0.5)
+
+   
+        axs[1,2].set_axis_off()    
+        for ax in axs.flat:
+            ax.set(xlabel='age', ylabel='score')
+        fig.tight_layout()
+        plt.show()
+        return fig
+

@@ -22,6 +22,7 @@ sqlalchemy = "^2.0.30"
 pandastable = "^0.13.1"
 plotext = "^5.2.8"
 scikit-learn = "^1.5.0"
+seaborn = "^0.13.2"
 
 
 [build-system]

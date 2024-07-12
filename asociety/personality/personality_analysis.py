@@ -29,9 +29,10 @@ def get_personas_ana_figure():
         ps = session.execute(text('select age,openness ,conscientiousness ,extraversion, agreeableness, neuroticism  FROM persona_personality where sex = "Male" ORDER BY age '))
         title = ['openness' ,'conscientiousness' ,'extraversion', 'agreeableness', 'neuroticism']
         import matplotlib.pyplot as plt
-        import matplotlib.pyplot as plt
+        import matplotlib
         import numpy as np
         mdata = data(ps)
+        matplotlib.use('TkAgg')
 
         fig, axs = plt.subplots(2, 3)
         for i in range(0, 5):
