@@ -62,7 +62,7 @@ class PersonalityBrowser:
 
     def plot_fill(self, result):
         colors = ['orange','green','magenta','red','blue']
-  
+        titles = ['openness' ,'conscientiousness' ,'extraversion', 'agreeableness', 'neuroticism','']
         from asociety.personality.personality_quiz import PersonalityResult
         pr = PersonalityResult(result=result)
         all = pr.all
@@ -77,7 +77,7 @@ class PersonalityBrowser:
             #axs[row, col].set_ylim([0, 100])
             self.axs[row, col].cla()
             self.axs[row, col].barh(data.keys(), data.values(), color=colors[i])
-           
+            self.axs[row, col].set_title(titles[i]) 
    
 
 

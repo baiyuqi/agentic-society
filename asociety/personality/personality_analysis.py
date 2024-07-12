@@ -19,10 +19,7 @@ def compute(age, d):
         yvals = p(x)
         return x, y, yvals
 
-def plot_personas_vative():
-    fig = get_personas_ana_figure()
-
-def get_personas_ana_figure():
+def get_personas_ana():
     from sqlalchemy.orm import Session
     from sqlalchemy import text
     with Session(engine) as session:
@@ -32,26 +29,8 @@ def get_personas_ana_figure():
         import matplotlib
         import numpy as np
         mdata = data(ps)
-        matplotlib.use('TkAgg')
-
-        fig, axs = plt.subplots(2, 3)
-        for i in range(0, 5):
-            x, y,yvals = compute(mdata[0],mdata[i + 1])
-
-
-            row = int(i / 3)
-            col = i % 3
-
-            #axs[row, col].set_ylim([0, 100])
-            axs[row, col].plot(x, y, '*')
-            axs[row, col].plot(x,yvals,'r')
-            axs[row, col].set_title(title[i])
-        axs[1,2].set_axis_off()    
-        for ax in axs.flat:
-            ax.set(xlabel='age', ylabel='score')
-        fig.tight_layout()
-        plt.show()
-        return fig
+ 
+        return mdata
 
       
    
