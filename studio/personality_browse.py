@@ -50,21 +50,21 @@ class PersonalityBrowser:
         from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
         import matplotlib.pyplot as plt
         
-        fig, axs = plt.subplots(2, 3)
+        fig, axs = plt.subplots(3, 2)
         for i in range(0, 5):
             
 
 
-            row = int(i / 3)
-            col = i % 3
+            row = int(i / 2)
+            col = i % 2
             from asociety.personality.personality_quiz import PersonalityResult
             pr = PersonalityResult(result=result)
             data = pr.E
             #axs[row, col].set_ylim([0, 100])
-            axs[row, col].bar(range(len(data)), data.values(), align='center', width=0.5)
-
+            axs[row, col].barh(data.keys(), data.values())
+           
    
-        axs[1,2].set_axis_off()    
+        axs[2,1].set_axis_off()    
         for ax in axs.flat:
             ax.set(xlabel='age', ylabel='score')
         fig.tight_layout()
