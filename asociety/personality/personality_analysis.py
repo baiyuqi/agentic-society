@@ -18,7 +18,11 @@ def compute(age, d):
         p = np.poly1d(z)
         yvals = p(x)
         return x, y, yvals
-def extract_personas_of_experiment():
+
+def plot_personas_vative():
+    fig = get_personas_ana_figure()
+
+def get_personas_ana_figure():
     from sqlalchemy.orm import Session
     from sqlalchemy import text
     with Session(engine) as session:
@@ -45,8 +49,9 @@ def extract_personas_of_experiment():
         for ax in axs.flat:
             ax.set(xlabel='age', ylabel='score')
         fig.tight_layout()
-        
-
         plt.show()
+        return fig
+
+      
    
 
