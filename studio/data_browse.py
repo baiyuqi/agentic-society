@@ -20,6 +20,16 @@ class DataBrowser:
         inner_panedwindow.add(top_frame, weight=1)
         inner_panedwindow.add(bottom_frame, weight=1)
 
+
+        buttom_pane = inner_panedwindow = ttk.PanedWindow(bottom_frame, orient=HORIZONTAL)
+        left_bottom_frame = ttk.Frame(buttom_pane, width=400, height=200, relief=SUNKEN,style='TFrame')
+        right_bottom_frame = ttk.Frame(buttom_pane, width=400, height=200, relief=SUNKEN,style='TFrame')
+
+        # Add the frames to the inner PanedWindow
+        buttom_pane.add(left_bottom_frame, weight=1)
+        buttom_pane.add(right_bottom_frame, weight=1)
+        buttom_pane.pack(fill=BOTH, expand=True)  # Pack the top_panedwindow
+
         # Create a scrolled text widget
         self.text_widget = scrolledtext.ScrolledText(top_frame, wrap=WORD, bg='#1E1E1E', fg='#DADADA', 
                                                      insertbackground='#DADADA', font=('Helvetica', 14),
@@ -34,7 +44,8 @@ class DataBrowser:
         self.text_widget.insert(END, sample_text)
 
 
-        self.table = Table(bottom_frame, showtoolbar=True, showstatusbar=True)
+        self.table = Table(right_bottom_frame, showtoolbar=True, showstatusbar=True)
+        self.table.model.df = self.table.model.df.head(0)
         self.table.show()
         self.table.bind("<ButtonRelease-1>", self.on_row_click)
     def setData(self, item, updateTree):

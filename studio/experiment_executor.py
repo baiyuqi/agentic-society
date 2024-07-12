@@ -68,11 +68,19 @@ class ExperimentExecutorPanel:
         self.desc_var.set(self.experiment.description)
             
     def execute(self):
+        from tkinter import messagebox
+        response = messagebox.askokcancel("Confirmation", "This will invoke LLM and cause respurce cost, will you continue ?")
+        if not response:
+            return 
         from asociety.experiments.experiment_executor import ExperimentExecutor
         exe = ExperimentExecutor()
         result = exe.executeExperiment(self.experiment.name,self.experiment.type,self.persist)
 
     def reparse(self):
+        from tkinter import messagebox
+        response = messagebox.askokcancel("Confirmation", "This will erase result of previous work, will you continue ?")
+        if not response:
+            return 
         df = self.table.model.df
         ind = df.loc[df.agent_answer.isnull()]
         ind = ind.loc[df.response != '']

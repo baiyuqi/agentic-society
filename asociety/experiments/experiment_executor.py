@@ -16,6 +16,10 @@ class ExperimentExecutor:
         question_set = question_set_by_experiment_name(name)
         sql = "SELECT * from quiz_answer where experiment_name = '" + name + "' and agent_answer IS NULL "
         df = pd.read_sql_query(sql, engine)
+        if df.empty:
+            import tkinter.messagebox as mbox
+            mbox.showinfo('no task to execute!','no task to execute!')
+            return
         result = []
         for i, row in df.iterrows():
             id = row['id']
@@ -33,7 +37,12 @@ class ExperimentExecutor:
         return result
     def executeByquestion(self, name, persist,question_set):
         sql = "SELECT * from question_answer where experiment_name = '" + name + "' and agent_answer IS NULL "
+
         df = pd.read_sql_query(sql, engine)
+        if df.empty:
+            import tkinter.messagebox as mbox
+            mbox.showinfo('no task to execute!','no task to execute!')        
+            return
         result = []
         for i, row in df.iterrows():
             id = row['id']
