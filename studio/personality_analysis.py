@@ -69,7 +69,7 @@ class PersonalityAnalysis:
 
     def setData(self, item, updateTree):
 
-        self.table.redraw()
+        pass
 
 
             
