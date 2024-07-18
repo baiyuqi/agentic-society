@@ -7,6 +7,18 @@ from sqlalchemy import Column, Integer, String
 
 class Base(DeclarativeBase):
     pass
+
+
+class Chat(Base):
+    __tablename__ = "chat"
+    id: Mapped[int] =  Column(Integer, primary_key=True, autoincrement=True)
+    chatters: Mapped[str] 
+    state: Mapped[str] 
+    summary: Mapped[str] 
+
+    def __repr__(self) -> str:
+        return f"Persona(id={self.id!r}, chatters={self.chatters!r}, state={self.state!r}, education={self.summary!r})"
+
 class FriendRelationship(Base):
     __tablename__ = "friend_relationship"
     id: Mapped[int] =  Column(Integer, primary_key=True, autoincrement=True)
