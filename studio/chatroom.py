@@ -55,6 +55,17 @@ class Chatroom:
 
         self.submit_button = ttk.Button(bottom_frame, text="query friends", command=self.query_friends,style='TButton')
         self.submit_button.grid(row=1, column=8, columnspan=1, pady=10)
+
+       # Label for Entry
+        self.recursion_limit_label = ttk.Label(bottom_frame, text="Enter recursion limit:",style='TLabel')
+        self.recursion_limit_label.grid(row=2, column=0, padx=10, pady=5, sticky='w')
+
+        # Entry
+        self.recursion_limit_var = StringVar()
+        self.recursion_limit = ttk.Entry(bottom_frame, textvariable=self.recursion_limit_var)
+        self.recursion_limit.grid(row=2, column=2, padx=10, pady=5, sticky='w')
+
+
         self.tree = self.persona_table(top_right_frame)
     def fill_personas(self,data,fp):
         self.tree.delete(*self.tree.get_children())
@@ -106,6 +117,14 @@ class Chatroom:
     def stop_chat(self):
         self.run = False
     def start_chat(self):
+        if self.recursion_limit_var.get().isdigit():
+                self.recursion_limit_value = int(self.recursion_limit_var.get())
+               
+        else:
+            from tkinter import messagebox
+            messagebox.showerror("Invalid input", "Please enter a valid integer.")
+            return
+
         self.run = True;
         from asociety.interaction.chatroom_manager import create_graph
         graph = create_graph(self.personas, self.message)
@@ -129,12 +148,13 @@ class Chatroom:
                 ],
             },
             # Maximum number of steps to take in the graph
-            {"recursion_limit": 150},
+            {"recursion_limit": self.recursion_limit_value},
         )
         def run():
             for s in events:
                 if not self.run:
-                    return;
+                    return
+
                 print(s)
                 print("----")
         self.text_widget.delete(1.0, END)
