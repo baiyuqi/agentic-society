@@ -21,9 +21,8 @@ class Chat(Base):
 
 class FriendRelationship(Base):
     __tablename__ = "friend_relationship"
-    id: Mapped[int] =  Column(Integer, primary_key=True, autoincrement=True)
-    from_id: Mapped[int] =  Column(Integer)
-    to_id: Mapped[int] =  Column(Integer)
+    from_id: Mapped[int] =  Column(Integer, primary_key=True)
+    to_id: Mapped[int] =  Column(Integer, primary_key=True)
     
  
     def __repr__(self) -> str:

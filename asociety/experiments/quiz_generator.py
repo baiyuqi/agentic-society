@@ -18,9 +18,11 @@ class QuizGenerator:
             import numpy as np
             subs = np.array_split(qids, n)
             result = []
+            sheet_ind = 0
             for sub in subs:
                 subs = self.generateSubQuiz(sub)
-                result.append(subs)
+                result.append([sheet_ind,subs])
+                sheet_ind = sheet_ind + 1
             return result
 
 
