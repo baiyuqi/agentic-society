@@ -51,8 +51,9 @@ class MainWindow:
         self.personality_analysis = PersonalityAnalysis(self.right)
         from studio.question_browse import QuestionBrowser
         self.questionbrowser = QuestionBrowser(self.right)
-
-        panels = {"question": self.questionbrowser, "persona":self.browser,"persona group":self.manager,"question group":self.manager,"experimentlist":self.manager,"experiment":self.executor,"analysis":self.analsis,"chatroom":self.chatroom,'personality':self.personality,'personality-analysis':self.personality_analysis}
+        from studio.evaluation import EvaluationPanel
+        self.evaluationPanel = EvaluationPanel(self.right)
+        panels = {"question": self.questionbrowser, "persona":self.browser,"persona group":self.manager,"question group":self.manager,"experimentlist":self.manager,"experiment":self.executor,"analysis":self.analsis,"chatroom":self.chatroom,'personality':self.personality,'personality-analysis':self.personality_analysis, 'evaluation':self.evaluationPanel}
         self.panels = panels
 
     def donothing(self):
@@ -134,7 +135,8 @@ class MainWindow:
                 tv.insert('analysis-exp', str(i), 'analysis_' + e.name, text=e.name)
         tv.insert('analysislist', '1', 'personality', text='personality')   
         tv.insert('analysislist', '2', 'personality-analysis', text='personality analysis')   
-        tv.insert('', '4', 'chatroom', text='chatroom')
+        tv.insert('', '4', 'evaluation', text='evaluation')
+        tv.insert('', '5', 'chatroom', text='chatroom')
     def treeSelect(self, event):
         from asociety.repository.database import engine
         items = self.treeView.selection()
