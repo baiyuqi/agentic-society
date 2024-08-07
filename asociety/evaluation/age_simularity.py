@@ -39,6 +39,7 @@ def llm_mean_age():
     #         tupe = r.tuple()
     #         tupe = list(tupe[2:])
     #         pass
+
 if __name__ == "__main__": 
     llm = llm_mean_age()
     real_bhps = real_mean_age('BHPS')
