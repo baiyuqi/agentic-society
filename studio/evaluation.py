@@ -22,49 +22,35 @@ class EvaluationPanel:
 
 
         
-        self.submit_button = ttk.Button(bottom_frame, text="create", command=self.ana)
+        self.submit_button = ttk.Button(bottom_frame, text="BHPS", command=self.bhps)
         self.submit_button.grid(row=1, column=0, columnspan=2, pady=10)
-        self.plot_empty()
-
-    def ana(self):
-            
-        from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,  
-        NavigationToolbar2Tk) 
-        from asociety.personality.personality_analysis import  compute,get_personas_ana
- 
-        mdata = get_personas_ana()
-
-        titles = ['openness' ,'conscientiousness' ,'extraversion', 'agreeableness', 'neuroticism','']
-
-        for i in range(0, 5):
-            x, y,yvals = compute(mdata[0],mdata[i + 1])
+        self.submit_button = ttk.Button(bottom_frame, text="GSOEP", command=self.gsoep)
+        self.submit_button.grid(row=1, column=2, columnspan=2, pady=10)
+        self.submit_button = ttk.Button(bottom_frame, text="LLM", command=self.llm)
+        self.submit_button.grid(row=1, column=4, columnspan=2, pady=10)
+        self.submit_button = ttk.Button(bottom_frame, text="similarity", command=self.differences)
+        self.submit_button.grid(row=1, column=6, columnspan=2, pady=10)
+        self.table = Table(top_frame, showtoolbar=True, showstatusbar=True)
+        self.table.model.df = self.table.model.df.head(0)
+        self.table.show()
 
 
-            row = int(i / 3)
-            col = i % 3
-            self.axs[row, col].cla()
-            #axs[row, col].set_ylim([0, 100])
-            self.axs[row, col].plot(x, y, '*')
-            self.axs[row, col].plot(x,yvals,'r')
-            self.axs[row, col].set(xlabel='age', ylabel='score')
-            self.axs[row, col].set_title(titles[i])
-        self.canvas.draw()
-
-    def plot_empty(self):
-        from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-        import matplotlib.pyplot as plt
-        titles = ['openness' ,'conscientiousness' ,'extraversion', 'agreeableness', 'neuroticism','']
-        self.fig, self.axs = plt.subplots(2, 3)
-     
-        self.axs[1,2].set_axis_off()    
-        for i, ax in enumerate(self.axs.flat):
-           
-            ax.set_title(titles[i])
-        self.fig.tight_layout()
-        self.canvas = FigureCanvasTkAgg(self.fig, master=self.top_frame)
-        self.canvas.draw()
-        self.canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
-
+    def bhps(self):
+        df = pd.read_csv('data/cross_section/age_mean_BHPS.csv')
+        self.table.model.df = df
+        self.table.redraw()
+    def gsoep(self):
+        df = pd.read_csv('data/cross_section/age_mean_GSOEP.csv')
+        self.table.model.df = df
+        self.table.redraw()
+    def llm(self):
+        df = pd.read_csv('data/cross_section/llm_glm4.csv')
+        self.table.model.df = df
+        self.table.redraw()
+    def differences(self):
+        df = pd.read_csv('data/cross_section/distances.csv')
+        self.table.model.df = df
+        self.table.redraw()
 
 
     def setData(self, item, updateTree):

@@ -49,7 +49,7 @@ def curve_dist(c1, c2):
     result = math.sqrt(sum/len(c1))
     return result
 
-if __name__ == "__main__": 
+def evaluate():
     llm = llm_mean_age()
     real_bhps = real_mean_age('BHPS')
     rea_gsoep = real_mean_age('GSOEP')
@@ -85,4 +85,5 @@ if __name__ == "__main__":
         dist_gsoep.append(dist2)
     distances = pd.DataFrame([dist_real, dist_bhps, dist_gsoep],columns=bigfive)
     distances.to_csv('data/cross_section/distances.csv')
-    print(distances)
+
+
