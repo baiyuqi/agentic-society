@@ -58,5 +58,9 @@ if __name__ == "__main__":
     ex3 = llm['extraversion'].to_numpy()
 
     dist = np.linalg.norm(ex1 - ex2)
+    dist = round(dist, 2)
     dist1 = np.linalg.norm(ex1 - ex3)
+    dist1 = round(dist1, 2)
+    dist2 = np.linalg.norm(ex2 - ex3)
+    dist2 = round(dist2, 2)
     print(dist)
