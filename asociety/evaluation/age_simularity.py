@@ -39,6 +39,15 @@ def llm_mean_age():
     #         tupe = r.tuple()
     #         tupe = list(tupe[2:])
     #         pass
+def curve_dist(c1, c2):
+    sum = 0
+    for i in range(len(c1)):
+        d = c1[i] - c2[i]
+        d2 = d * d
+        sum +=d2
+    import math
+    result = math.sqrt(sum/len(c1))
+    return result
 
 if __name__ == "__main__": 
     llm = llm_mean_age()
@@ -51,16 +60,29 @@ if __name__ == "__main__":
     real_bhps = align(real_bhps, inter)
     rea_gsoep = align(rea_gsoep, inter)
     llm = align(llm, inter)
+    print(llm)
+    llm.to_csv('data/cross_section/llm_glm4.csv')
 
     import numpy as np
-    ex1 = real_bhps['extraversion'].to_numpy()
-    ex2 = rea_gsoep['extraversion'].to_numpy()
-    ex3 = llm['extraversion'].to_numpy()
+    bigfive = ['extraversion','agreeableness','conscientiousness','neuroticism','openness']
+    dist_real = []
+    dist_bhps = []
+    dist_gsoep = []
+    for bf in bigfive:
+        ex1 = real_bhps[bf].to_numpy()
+        ex2 = rea_gsoep[bf].to_numpy()
+        ex3 = llm[bf].to_numpy()
 
-    dist = np.linalg.norm(ex1 - ex2)
-    dist = round(dist, 2)
-    dist1 = np.linalg.norm(ex1 - ex3)
-    dist1 = round(dist1, 2)
-    dist2 = np.linalg.norm(ex2 - ex3)
-    dist2 = round(dist2, 2)
-    print(dist)
+        dist = curve_dist(ex1, ex2)
+        dist = round(dist, 2)
+        dist1 = curve_dist(ex1, ex3)
+        dist1 = round(dist1, 2)
+    
+        dist2 = curve_dist(ex2, ex3)
+        dist2 = round(dist2, 2)
+        dist_real.append(dist)
+        dist_bhps.append(dist1)
+        dist_gsoep.append(dist2)
+    distances = pd.DataFrame([dist_real, dist_bhps, dist_gsoep],columns=bigfive)
+    distances.to_csv('data/cross_section/distances.csv')
+    print(distances)

@@ -1,4 +1,4 @@
-age_range,sample_size,extraversion,agreeableness,conscentiousness, neuroticism,openness
+age_range,sample_size,extraversion,agreeableness,conscientiousness, neuroticism,openness
 16_19,1007,9.86,10.61,10.97,10.86,10.43
 20_29,2216,9.93,10.11,10.11,10.36,10.21
 30_39,2590,10.33,10.02,10.21,10.03,10.16
