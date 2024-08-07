@@ -9,18 +9,23 @@ def real_mean_age(section):
     # print(pc)
 def real_mean_variation(section):
     vdf = pd.read_csv('data/cross_section/age_variation_' + section + '.csv')
-def align(real, llm):
+def align(data, inter):
+
+    data = data.loc[data['age_range'].isin(inter)]
+  
+    return data
+def intersection(real, llm):
     rrange = set(real['age_range'].to_numpy())
 
     print(rrange)
     lrange = set(llm['age_range'].to_numpy())
     inter = rrange.intersection(lrange)
-    real = real.loc[real['age_range'].isin(inter)]
-    llm = llm.loc[llm['age_range'].isin(inter)]
-    return (real, llm)
+    return inter
+
+
 
 def llm_mean_age():
-    sql = '''select age_range,count(*) as sample_size,AVG(extraversion),AVG(agreeableness),AVG(conscientiousness),AVG(neuroticism),AVG(openness)  from persona_personality GROUP BY age_range '''
+    sql = '''select age_range,count(*) as sample_size,AVG(extraversion) as extraversion,AVG(agreeableness) as agreeableness,AVG(conscientiousness) as conscientiousness,AVG(neuroticism) as neuroticism,AVG(openness) as openness from persona_personality GROUP BY age_range '''
 
    
     from asociety.repository.database import engine
@@ -36,5 +41,21 @@ def llm_mean_age():
     #         pass
 if __name__ == "__main__": 
     llm = llm_mean_age()
-    real = real_mean_age('BHPS')
-    align(real, llm)
+    real_bhps = real_mean_age('BHPS')
+    rea_gsoep = real_mean_age('GSOEP')
+    inter = intersection(llm, real_bhps)
+
+
+
+    real_bhps = align(real_bhps, inter)
+    rea_gsoep = align(rea_gsoep, inter)
+    llm = align(llm, inter)
+
+    import numpy as np
+    ex1 = real_bhps['extraversion'].to_numpy()
+    ex2 = rea_gsoep['extraversion'].to_numpy()
+    ex3 = llm['extraversion'].to_numpy()
+
+    dist = np.linalg.norm(ex1 - ex2)
+    dist1 = np.linalg.norm(ex1 - ex3)
+    print(dist)
