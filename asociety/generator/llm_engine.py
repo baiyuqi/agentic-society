@@ -3,11 +3,25 @@ import json
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.chat_models import ChatZhipuAI
 import os
-apikey = os.getenv('ZHIPU_APIKEY')
-llm = ChatZhipuAI(
-    model="glm-4",
-    api_key=apikey,
-)
+
+from asociety import config
+model = config.configuration['llm']
+
+if model == 'glm-4':
+    
+    apikey = os.getenv('ZHIPU_APIKEY')
+    llm = ChatZhipuAI(
+        model="glm-4",
+        api_key=apikey,
+    )
+
+if model == 'gpt-4o':
+    from langchain_openai import OpenAI
+    apikey = os.getenv('OPENAI_APIKEY')
+    llm = OpenAI(
+        model="gpt-4o",
+        api_key=apikey,
+    )
 with open('prompts/generation.json') as pjson:
             d = json.load(pjson)
             fs = d["from_skeleton"]
