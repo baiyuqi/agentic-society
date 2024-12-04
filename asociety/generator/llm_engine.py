@@ -14,12 +14,19 @@ if model == 'glm-4':
         model="glm-4",
         api_key=apikey,
     )
-
-if model == 'gpt-4o':
+if model == 'local':
     from langchain_openai import OpenAI
     apikey = os.getenv('OPENAI_APIKEY')
     llm = OpenAI(
         model="gpt-4o",
+        api_key=apikey,
+    )
+if model == 'gpt-4o':
+    from langchain_openai import OpenAI
+    apikey = os.getenv('OPENAI_APIKEY')
+    llm = OpenAI(
+        model="glm4-chat-9b",
+        openai_api_base = ""
         api_key=apikey,
     )
 with open('prompts/generation.json') as pjson:
