@@ -3,12 +3,7 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 
 from sqlalchemy import Column, Integer, String
-
-
-class Base(DeclarativeBase):
-    pass
-
-
+from asociety.repository.database import Base
 class Chat(Base):
     __tablename__ = "chat"
     id: Mapped[int] =  Column(Integer, primary_key=True, autoincrement=True)

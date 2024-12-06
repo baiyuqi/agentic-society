@@ -17,6 +17,6 @@ if __name__ == "__main__":
 
     df.insert(1, 'question_set', 'ipip_neo_120')
   
-    from sqlalchemy import create_engine
-    engine =create_engine(r'sqlite:///data/db/agentic_society.db')
+    from asociety.repository.database import engine
+
     df.to_sql(name="question", con=engine,if_exists='append', index=False)

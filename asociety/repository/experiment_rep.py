@@ -7,10 +7,8 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String
+from asociety.repository.database import Base
 
-
-class Base(DeclarativeBase):
-    pass
 class Question(Base):
     __tablename__ = "question"
     id: Mapped[int] =  Column(Integer, primary_key=True, autoincrement=True)

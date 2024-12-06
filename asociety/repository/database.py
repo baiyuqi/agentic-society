@@ -1,13 +1,18 @@
 
 from sqlalchemy import create_engine
 from asociety import config
-model = config.configuration['llm']
+database = config.configuration['database']
 
-if model == 'glm-4':
-    dbfile = r'sqlite:///data/db/agentic_society.db'
-if model == 'chatgpt4':
-    dbfile = r'sqlite:///data/db/agentic_society_chatgpt4.db'
-if model == 'local':
-    dbfile = r'sqlite:///data/db/agentic_society_local.db'
+
+dbfile = r'sqlite:///data/db/' + database + '.db'
+from sqlalchemy.orm import DeclarativeBase
+class Base(DeclarativeBase):
+    pass
+
 engine =create_engine(dbfile)
 
+
+from asociety.repository.experiment_rep import *
+from asociety.repository.personality_rep import *
+from asociety.repository.socializing_rep import *
+Base.metadata.create_all(engine)

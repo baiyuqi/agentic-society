@@ -22,11 +22,11 @@ if model == 'local':
         openai_api_base="http://221.229.101.198:8000/v1"
     )
 if model == 'gpt-4o':
-    from langchain_openai import OpenAI
+    from langchain_openai import ChatOpenAI
     apikey = os.getenv('OPENAI_APIKEY')
-    llm = OpenAI(
+    llm = ChatOpenAI(
         model="glm4-chat-9b",
-        openai_api_base = ""
+        openai_api_base = "",
         api_key=apikey,
     )
 with open('prompts/generation.json') as pjson:

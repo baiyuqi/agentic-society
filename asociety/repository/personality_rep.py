@@ -7,10 +7,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String
-
-
-class Base(DeclarativeBase):
-    pass
+from asociety.repository.database import Base
 class Personality(Base):
     __tablename__ = "personality"
     persona_id: Mapped[int] =  Column(Integer, primary_key=True)
