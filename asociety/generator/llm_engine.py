@@ -16,7 +16,6 @@ if model == 'glm-4':
     )
 if model == 'local':
     from langchain_openai import OpenAI
-    apikey = os.getenv('OPENAI_APIKEY')
     llm = OpenAI(
         model="gpt-4o",
         api_key=apikey,
