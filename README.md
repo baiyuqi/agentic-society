@@ -21,7 +21,11 @@ The current top-level three packages:
 2. studio package, desktop studio
 3. tools package, batch job scripts
 
+vllm serve /data1/glm-4-9b-chat --trust_remote_code --tensor_parallel_size 2 --max_model_len 131072 --enforce_eager --enable_chunked_prefill --max_num_batched_tokens 8192
+python -m vllm.entrypoints.openai.api_server --model /data1/glm-4-9b-chat --trust_remote_code --tensor_parallel_size 2 --max_model_len 131072 --enforce_eager --enable_chunked_prefill --max_num_batched_tokens 8192
 
+
+NCCL_P2P_DISABLE=1
 #### deta structure
 
 Currently, the data is stored in the data/db/agent-society.db SQLite database file.

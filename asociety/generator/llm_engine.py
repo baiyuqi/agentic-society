@@ -15,10 +15,11 @@ if model == 'glm-4':
         api_key=apikey,
     )
 if model == 'local':
-    from langchain_openai import OpenAI
-    llm = OpenAI(
-        model="gpt-4o",
-        api_key=apikey,
+    from langchain_openai import ChatOpenAI
+    llm = ChatOpenAI(
+        model="/data1/glm-4-9b-chat",
+        api_key="aaa",
+        openai_api_base="http://221.229.101.198:8000/v1"
     )
 if model == 'gpt-4o':
     from langchain_openai import OpenAI

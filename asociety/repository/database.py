@@ -7,5 +7,7 @@ if model == 'glm-4':
     dbfile = r'sqlite:///data/db/agentic_society.db'
 if model == 'chatgpt4':
     dbfile = r'sqlite:///data/db/agentic_society_chatgpt4.db'
+if model == 'local':
+    dbfile = r'sqlite:///data/db/agentic_society_local.db'
 engine =create_engine(dbfile)
 

@@ -1,4 +1,4 @@
 configuration={
-    'llm':'glm-4'
+    'llm':'local'
 
 }
