@@ -1,9 +1,5 @@
-from asociety.generator.persona_skeleton_generator import *
-import json
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_community.chat_models import ChatZhipuAI
-import os
-from langchain_core.messages import HumanMessage, SystemMessage
+
+from langchain_core.messages import HumanMessage
 
 messages = [
     

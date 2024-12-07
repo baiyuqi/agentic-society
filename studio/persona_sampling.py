@@ -35,7 +35,7 @@ class PersonaSamplingDialog:
         self.myEntryBox = Entry(top_frame)
         self.myEntryBox.pack(padx=10,pady=10)
 
-        self.mySubmitButton = Button(top_frame, text='Submit', command=self.asncsampling,style='TButton')
+        self.mySubmitButton = ttk.Button(top_frame, text='Submit', command=self.asncsampling,style='TButton')
 
         self.mySubmitButton.pack(padx=10,pady=10)
         self.progressbar = ttk.Progressbar(top_frame,mode="indeterminate")
